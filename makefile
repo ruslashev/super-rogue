@@ -2,20 +2,20 @@
 WARNINGS = -Wall -Wextra -pedantic -Wshadow -Wwrite-strings -Winline
 DEBUG = 
 CFLAGS = $(WARNINGS) -std=c++0x
-OBJS = $(patsubst %.cpp, objs/%.o, $(shell find . -type f -name "*.cpp"))
+OBJS = $(patsubst src/%.cpp, objs/%.o, $(shell find src -type f -name "*.cpp" ))
 EXECNAME = super-rogue
 LIBS = -lglfw -lGL -lGLEW
 
-objs/%.o: %.cpp %.hpp
+objs/%.o: src/%.cpp src/%.hpp
 	@mkdir objs -p
 	g++ -c -o $@ $< $(CFLAGS) $(DEBUG)
 
-$(EXECNAME): $(OBJS)
+bin/$(EXECNAME): $(OBJS)
 	g++ -o $@ $^ $(CFLAGS) $(LIBS)
 	@make execute > /dev/null 2>&1
 
 clean:
-	-rm -rf objs $(EXECNAME)
+	-rm -rf objs bin/$(EXECNAME)
 
 execute:
-	./$(EXECNAME)
+	cd bin && ./$(EXECNAME)
