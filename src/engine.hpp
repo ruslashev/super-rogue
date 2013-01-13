@@ -18,11 +18,12 @@ class renderer
 {
 private:
 	glm::mat4 model, view, projection;
-	GLuint vertexShader, fragmentShader, shaderProgram;
+	GLuint vertexShader, fragmentShader;
 	
 	double time, oldTime, dt, newTime, frameTime;
 public:
-	GLint posAttrib, mvpUniform;
+	GLint posAttrib, mvpUniform, texAttrib;
+	GLuint shaderProgram;
 	renderer(int wind_width, int wind_height, std::string title);
 	~renderer();
 	
@@ -34,69 +35,90 @@ public:
 	void update();
 	
 	void loadShader(GLenum type, GLuint& shader, std::string filename);
+
+	void cleanup();
 };
 
 class mesh
 {
 private:
-	GLuint vbo_vertices, ibo_indices;
-	GLint *posAttrib;
+	GLuint vbo_vertices, ibo_indices, vbo_texcoords;
+	GLint *posAttrib, *texAttrib;
 public:
 	std::vector<glm::vec2> vertices;
-	std::vector<ushort> indices;
 	std::vector<glm::vec2> texCoords;
+	std::vector<ushort> indices;
 	
-	mesh(GLint posAttr)
+	mesh(GLint posAttr, GLint texAttr)
 	{
 		vbo_vertices = 0;
+		vbo_texcoords = 0;
 		ibo_indices = 0;
 		
 		posAttrib = &posAttr;
+		texAttrib = &texAttr;
 	}
 	~mesh()
 	{
 		if (vbo_vertices != 0) { glDeleteBuffers(1, &vbo_vertices); }
+		if (vbo_texcoords != 0) { glDeleteBuffers(1, &vbo_texcoords); }
 		if (ibo_indices != 0) { glDeleteBuffers(1, &ibo_indices); }
 		
-		posAttrib = NULL;
+		posAttrib = NULL; // dunno
+		texAttrib = NULL;
 	}
 	
 	void upload()
 	{
-		if (this->vertices.size() > 0)
+		if (vertices.size() > 0)
 		{
-			glGenBuffers(1, &this->vbo_vertices);
-			glBindBuffer(GL_ARRAY_BUFFER, this->vbo_vertices);
-			glBufferData(GL_ARRAY_BUFFER, this->vertices.size()*sizeof(this->vertices[0]), this->vertices.data(), GL_STATIC_DRAW);
+			glGenBuffers(1, &vbo_vertices);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+			glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(vertices[0]), vertices.data(), GL_STATIC_DRAW);
+		}
+
+		if (texCoords.size() > 0)
+		{
+			glGenBuffers(1, &vbo_texcoords);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo_texcoords);
+			glBufferData(GL_ARRAY_BUFFER, texCoords.size()*sizeof(texCoords[0]), texCoords.data(), GL_STATIC_DRAW);
 		}
 				
-		if (this->indices.size() > 0)
+		if (indices.size() > 0)
 		{
-			glGenBuffers(1, &this->ibo_indices);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ibo_indices);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices.size() * sizeof(this->indices[0]), this->indices.data(), GL_STATIC_DRAW);
+			glGenBuffers(1, &ibo_indices);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_indices);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), indices.data(), GL_STATIC_DRAW);
 		}
 	}
 	
 	void draw(GLenum drawMode = GL_TRIANGLES)
 	{
-		if (this->vbo_vertices != 0)
+		if (vbo_vertices != 0)
 		{
-			glEnableVertexAttribArray(*posAttrib);
-			glBindBuffer(GL_ARRAY_BUFFER, this->vbo_vertices);
+			glewnableVertexAttribArray(*posAttrib);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
 			glVertexAttribPointer(*posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 		}
 		
-		if (this->ibo_indices != 0)
+		if (vbo_texcoords != 0)
 		{
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ibo_indices);
+			glEnableVertexAttribArray(*texAttrib);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo_texcoords);
+			glVertexAttribPointer(*texAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		}
+		
+		if (ibo_indices != 0)
+		{
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_indices);
 			int size;
 			glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
 			glDrawElements(drawMode, size/sizeof(ushort), GL_UNSIGNED_SHORT, 0);
 		} else {
-			glDrawArrays(drawMode, 0, this->vertices.size());
+			glDrawArrays(drawMode, 0, vertices.size());
 		}
 		
-		if (this->vbo_vertices != 0) { glDisableVertexAttribArray(*posAttrib); }
+		if (vbo_vertices != 0) { glDisableVertexAttribArray(*posAttrib); }
+		if (vbo_texcoords != 0) { glDisableVertexAttribArray(*texAttrib); }
 	}
 };

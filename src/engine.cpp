@@ -31,7 +31,7 @@ void renderer::init(int wind_width, int wind_height, std::string title)
 	
 	glViewport(0, 0, wind_width, wind_height);
 	//glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 
 	glPointSize(5.0f);
 
@@ -46,6 +46,7 @@ void renderer::init(int wind_width, int wind_height, std::string title)
 	if (!successfulLink) { std::cerr << "Failed to link shader programn" << std::endl; exit(1); }
 	glUseProgram(shaderProgram);
 	posAttrib = glGetAttribLocation(shaderProgram, "vposition");
+	texAttrib = glGetAttribLocation(shaderProgram, "vtexcoords");
 }
 
 void renderer::startMainLoop()
@@ -99,6 +100,8 @@ void renderer::loadShader(GLenum type, GLuint& shader, std::string filename)
 
 renderer::~renderer()
 {
+	cleanup();
+
 	glDetachShader(shaderProgram, vertexShader);	
 	glDetachShader(shaderProgram, fragmentShader);
 	glDeleteProgram(shaderProgram);
