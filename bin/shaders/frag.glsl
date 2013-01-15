@@ -1,6 +1,5 @@
 #version 120
 
-varying vec2 position;
 varying vec2 texcoords;
 
 uniform sampler2D tile;

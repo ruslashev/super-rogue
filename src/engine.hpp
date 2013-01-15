@@ -13,30 +13,31 @@
 #include <iostream>
 #include <math.h>
 
-// Drawing stuff
 class renderer
 {
 private:
+	
+public:
 	glm::mat4 model, view, projection;
 	GLuint vertexShader, fragmentShader;
-	
 	double time, oldTime, dt, newTime, frameTime;
-public:
 	GLint posAttrib, mvpUniform, texAttrib;
 	GLuint shaderProgram;
+	bool running;
+
 	renderer(int wind_width, int wind_height, std::string title);
 	~renderer();
 	
 	void init(int wind_width, int wind_height, std::string title);
 	
-	void startMainLoop();
 	void load();
 	void draw();
 	void update();
+	void cleanup();
 	
 	void loadShader(GLenum type, GLuint& shader, std::string filename);
 
-	void cleanup();
+	void updateTime();
 };
 
 class mesh
@@ -96,7 +97,7 @@ public:
 	{
 		if (vbo_vertices != 0)
 		{
-			glewnableVertexAttribArray(*posAttrib);
+			glEnableVertexAttribArray(*posAttrib);
 			glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
 			glVertexAttribPointer(*posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 		}

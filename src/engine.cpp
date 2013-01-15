@@ -4,12 +4,10 @@ renderer::renderer(int wind_width, int wind_height, std::string title)
 {
 	init(wind_width, wind_height, title);
 
-	projection = glm::ortho(0.f, (float)wind_width, (float)wind_height, 0.f);
-
-	mvpUniform = glGetUniformLocation(shaderProgram, "mvp");
-
 	time = 0.0;
 	dt = 0.0;
+
+	running = true;
 }
 
 void renderer::init(int wind_width, int wind_height, std::string title)
@@ -19,7 +17,7 @@ void renderer::init(int wind_width, int wind_height, std::string title)
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
 	glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 8);
-	if (!glfwOpenWindow(wind_width, wind_height, 0, 0, 0, 0, 24, 8, GLFW_WINDOW)) { std::cerr << "Failed to open window\n"; exit(1); }
+	if (!glfwOpenWindow(wind_width, wind_height, 0, 0, 0, 0, 0, 0, GLFW_WINDOW)) { std::cerr << "Failed to open window\n"; exit(1); }
 	glfwSetWindowTitle(title.c_str());
 	GLFWvidmode videoMode;
 	glfwGetDesktopMode(&videoMode);
@@ -30,8 +28,6 @@ void renderer::init(int wind_width, int wind_height, std::string title)
 	if (glewInitStatus != GLEW_OK) { std::cerr << "GLEW failed to initialize. Error string:\n" << glewGetErrorString(glewInitStatus) << std::endl; exit(1); }
 	
 	glViewport(0, 0, wind_width, wind_height);
-	//glEnable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_2D);
 
 	glPointSize(5.0f);
 
@@ -49,29 +45,19 @@ void renderer::init(int wind_width, int wind_height, std::string title)
 	texAttrib = glGetAttribLocation(shaderProgram, "vtexcoords");
 }
 
-void renderer::startMainLoop()
+void renderer::updateTime()
 {
-	const double constdt = 0.01;
-	oldTime = glfwGetTime();
+	newTime = glfwGetTime();
+	frameTime = newTime - oldTime;
+	frameTime = std::min(frameTime, 0.25); // max frame time to avoid spiral of death
+	oldTime = newTime;
+	dt += frameTime;
 
-	while (glfwGetWindowParam(GLFW_OPENED) && !glfwGetKey(GLFW_KEY_ESC) && !((glfwGetKey(GLFW_KEY_LCTRL) || glfwGetKey(GLFW_KEY_RCTRL)) && (glfwGetKey('C') || glfwGetKey('W') || glfwGetKey('D'))))
-	{
-		newTime = glfwGetTime();
-		frameTime = newTime - oldTime;
-		frameTime = std::min(frameTime, 0.25); // max frame time to avoid spiral of death
-		oldTime = newTime;
-		dt += frameTime;
-		
-		while (dt >= constdt)
-		{
-			update();
-	
-			time += constdt;
-			dt -= constdt;
-		}
-
-		draw();
-	}
+	// hopefully it doesn't look like spell anymore
+	bool pressedCtrl = glfwGetKey(GLFW_KEY_LCTRL) || glfwGetKey(GLFW_KEY_RCTRL);
+	running = glfwGetWindowParam(GLFW_OPENED) &&
+			!glfwGetKey(GLFW_KEY_ESC) &&
+			!(pressedCtrl && (glfwGetKey('C') || glfwGetKey('W') || glfwGetKey('D')));
 }
 
 void renderer::loadShader(GLenum type, GLuint& shader, std::string filename)
