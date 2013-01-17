@@ -20,53 +20,39 @@ private:
 public:
 	glm::mat4 model, view, projection;
 	GLuint vertexShader, fragmentShader;
-	double time, oldTime, dt, newTime, frameTime;
 	GLint posAttrib, mvpUniform, texAttrib;
 	GLuint shaderProgram;
-	bool running;
 
 	renderer(int wind_width, int wind_height, std::string title);
 	~renderer();
 	
 	void init(int wind_width, int wind_height, std::string title);
 	
-	void load();
-	void draw();
-	void update();
-	void cleanup();
-	
 	void loadShader(GLenum type, GLuint& shader, std::string filename);
-
-	void updateTime();
+	
+	void cleanup();
 };
 
 class mesh
 {
 private:
 	GLuint vbo_vertices, ibo_indices, vbo_texcoords;
-	GLint *posAttrib, *texAttrib;
 public:
 	std::vector<glm::vec2> vertices;
 	std::vector<glm::vec2> texCoords;
 	std::vector<ushort> indices;
 	
-	mesh(GLint posAttr, GLint texAttr)
+	mesh()
 	{
 		vbo_vertices = 0;
 		vbo_texcoords = 0;
 		ibo_indices = 0;
-		
-		posAttrib = &posAttr;
-		texAttrib = &texAttr;
 	}
 	~mesh()
 	{
 		if (vbo_vertices != 0) { glDeleteBuffers(1, &vbo_vertices); }
 		if (vbo_texcoords != 0) { glDeleteBuffers(1, &vbo_texcoords); }
 		if (ibo_indices != 0) { glDeleteBuffers(1, &ibo_indices); }
-		
-		posAttrib = NULL; // dunno
-		texAttrib = NULL;
 	}
 	
 	void upload()
@@ -93,20 +79,20 @@ public:
 		}
 	}
 	
-	void draw(GLenum drawMode = GL_TRIANGLES)
+	void draw(GLint posAttrib, GLint texAttrib, GLenum drawMode = GL_TRIANGLES)
 	{
 		if (vbo_vertices != 0)
 		{
-			glEnableVertexAttribArray(*posAttrib);
+			glEnableVertexAttribArray(posAttrib);
 			glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-			glVertexAttribPointer(*posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+			glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 		}
 		
 		if (vbo_texcoords != 0)
 		{
-			glEnableVertexAttribArray(*texAttrib);
+			glEnableVertexAttribArray(texAttrib);
 			glBindBuffer(GL_ARRAY_BUFFER, vbo_texcoords);
-			glVertexAttribPointer(*texAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+			glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 		}
 		
 		if (ibo_indices != 0)
@@ -119,7 +105,7 @@ public:
 			glDrawArrays(drawMode, 0, vertices.size());
 		}
 		
-		if (vbo_vertices != 0) { glDisableVertexAttribArray(*posAttrib); }
-		if (vbo_texcoords != 0) { glDisableVertexAttribArray(*texAttrib); }
+		if (vbo_vertices != 0) { glDisableVertexAttribArray(posAttrib); }
+		if (vbo_texcoords != 0) { glDisableVertexAttribArray(texAttrib); }
 	}
 };

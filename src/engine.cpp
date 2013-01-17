@@ -3,11 +3,6 @@
 renderer::renderer(int wind_width, int wind_height, std::string title)
 {
 	init(wind_width, wind_height, title);
-
-	time = 0.0;
-	dt = 0.0;
-
-	running = true;
 }
 
 void renderer::init(int wind_width, int wind_height, std::string title)
@@ -43,21 +38,6 @@ void renderer::init(int wind_width, int wind_height, std::string title)
 	glUseProgram(shaderProgram);
 	posAttrib = glGetAttribLocation(shaderProgram, "vposition");
 	texAttrib = glGetAttribLocation(shaderProgram, "vtexcoords");
-}
-
-void renderer::updateTime()
-{
-	newTime = glfwGetTime();
-	frameTime = newTime - oldTime;
-	frameTime = std::min(frameTime, 0.25); // max frame time to avoid spiral of death
-	oldTime = newTime;
-	dt += frameTime;
-
-	// hopefully it doesn't look like spell anymore
-	bool pressedCtrl = glfwGetKey(GLFW_KEY_LCTRL) || glfwGetKey(GLFW_KEY_RCTRL);
-	running = glfwGetWindowParam(GLFW_OPENED) &&
-			!glfwGetKey(GLFW_KEY_ESC) &&
-			!(pressedCtrl && (glfwGetKey('C') || glfwGetKey('W') || glfwGetKey('D')));
 }
 
 void renderer::loadShader(GLenum type, GLuint& shader, std::string filename)
