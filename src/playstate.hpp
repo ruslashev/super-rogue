@@ -1,15 +1,12 @@
 #ifndef PLAYSTATE_H
 #define PLAYSTATE_H
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
-
 #include "gameengine.hpp"
 
 class PlayState : public GameState
 {
 public:
-	void Init();
+	bool Init();
 	void Cleanup();
 
 	void Pause();

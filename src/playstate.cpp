@@ -4,9 +4,13 @@
 
 PlayState PlayState::m_PlayState;
 
-void PlayState::Init()
+bool PlayState::Init()
 {
-	font = TTF_OpenFont("DroidSans.ttf", 30);
+	font = TTF_OpenFont("DroidSans.ttf", 30);	
+	if (!font)
+		return false;
+
+	return true;
 }
 
 void PlayState::Cleanup()

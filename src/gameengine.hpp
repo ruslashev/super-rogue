@@ -3,7 +3,10 @@
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
+#include <SDL/SDL_image.h>
 #include <vector>
+
+#include "utils.hpp"
 
 using namespace std;
 
@@ -12,10 +15,9 @@ class GameState;
 class GameEngine
 {
 public:
-	void Init(const char* title, int width=640, int height=480, 
-		      int bpp=0, bool fullscreen=false);
+	bool Init(const char* title, int width=800, int height=600, int bpp=32);
 	void Cleanup();
-
+	
 	void ChangeState(GameState* state);
 	void PushState(GameState* state);
 	void PopState();
@@ -39,7 +41,7 @@ private:
 class GameState
 {
 public:
-	virtual void Init() = 0;
+	virtual bool Init() = 0;
 	virtual void Cleanup() = 0;
 
 	virtual void Pause() = 0;

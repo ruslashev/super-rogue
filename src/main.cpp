@@ -6,8 +6,9 @@ int main(int argc, char *argv[])
 {
 	GameEngine game;
 
-	game.Init("pew pew pew");
-
+	if (!game.Init("pew pew pew"))
+		return 0;
+	
 	game.ChangeState(IntroState::Instance());
 
 	while (game.Running())

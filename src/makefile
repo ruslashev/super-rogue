@@ -3,7 +3,7 @@ DEBUG =
 CFLAGS = $(WARNINGS) -std=c++0x -I/usr/local/include -L/usr/local/lib
 OBJS = $(patsubst ./%.cpp, ../objs/%.o, $(shell find . -type f -name "*.cpp" ))
 EXECNAME = super-rogue
-LIBS = -lSDL_ttf -lSDL
+LIBS = -lSDL_ttf -lSDL_image -lSDL
 
 ../objs/%.o: ./%.cpp
 	@mkdir ../objs -p

@@ -1,15 +1,12 @@
 #ifndef INTROSTATE_H
 #define INTROSTATE_H
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
-
 #include "gameengine.hpp"
 
 class IntroState : public GameState
 {
 public:
-	void Init();
+	bool Init();
 	void Cleanup();
 
 	void Pause();

@@ -1,22 +1,27 @@
 #include "gameengine.hpp"
 
-void GameEngine::Init(const char* title, int width, int height, int bpp, bool fullscreen)
+bool GameEngine::Init(const char* title, int width, int height, int bpp)
 {
-	SDL_Init(SDL_INIT_VIDEO);
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
+		return false;
+	}
 
 	SDL_WM_SetCaption(title, title);
 
-	screen = SDL_SetVideoMode(width, height, bpp, 0);
+	if (!(screen = SDL_SetVideoMode(width, height, bpp, SDL_SWSURFACE))) {
+		fprintf(stderr, "Failed to set video mode: %s\n", SDL_GetError());
+		return false;
+	}
 
-	//TODO: screen == NULL
-
-	TTF_Init();
-
-	//TODO: TTF_Init == -1
+	if (TTF_Init() == -1) {
+		fprintf(stderr, "Failed to initialize TTF library: %s\n", TTF_GetError());
+		return false;
+	}
 
 	m_running = true;
 	
-	printf("GameEngine Init\n");
+	return true;
 }
 
 void GameEngine::Cleanup()
@@ -28,10 +33,8 @@ void GameEngine::Cleanup()
 		states.pop_back();
 	}
 
-	printf("GameEngine Cleanup\n");
-
 	TTF_Quit();
-	
+
 	SDL_Quit();
 }
 

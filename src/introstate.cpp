@@ -5,9 +5,29 @@
 
 IntroState IntroState::m_IntroState;
 
-void IntroState::Init()
+bool IntroState::Init()
 {
-	font = TTF_OpenFont("DroidSans.ttf", 40);
+	font = TTF_OpenFont("DroidSans.ttf", 60);	
+	if (!font)
+		return false;
+
+	return true;
+}
+
+void IntroState::Update(GameEngine* game) 
+{
+
+}
+
+void IntroState::Draw(GameEngine* game) 
+{
+	int w;
+	TTF_SizeText(font, "Super rogue", &w, NULL);
+	textSurface = TTF_RenderText_Shaded(font, "Super rogue", SDL_Color{255, 255, 255}, SDL_Color{20, 20, 20});
+
+	applySurface(textSurface, game->screen, 400-w/2, 100);
+
+	SDL_Flip(game->screen);
 }
 
 void IntroState::Cleanup()
@@ -53,19 +73,4 @@ void IntroState::HandleEvents(GameEngine* game)
 				break;
 		}
 	}
-}
-
-void IntroState::Update(GameEngine* game) 
-{
-
-}
-
-void IntroState::Draw(GameEngine* game) 
-{
-	SDL_Color textColor = { 255, 255, 255 };
-	textSurface = TTF_RenderText_Solid(font, "Super rogue", textColor);
-
-	SDL_BlitSurface(textSurface, NULL, game->screen, NULL);
-
-	SDL_UpdateRect(game->screen, 0, 0, 0, 0);
 }
