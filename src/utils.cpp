@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-SDL_Surface* load_image(std::string filename)
+SDL_Surface* loadImage(std::string filename)
 {
 	SDL_Surface* loadedImage = NULL; 		//The image that's loaded
 	SDL_Surface* optimizedImage = NULL; 	//The optimized image that will be used

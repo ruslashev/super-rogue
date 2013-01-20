@@ -25,9 +25,9 @@ protected:
 
 private:
 	static PlayState m_PlayState;
-
-	TTF_Font* font;
-	SDL_Surface* textSurface;
+	
+	SDL_Rect tiles[5];
+	SDL_Surface* tilemap;
 };
 
 #endif

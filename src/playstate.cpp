@@ -6,17 +6,43 @@ PlayState PlayState::m_PlayState;
 
 bool PlayState::Init()
 {
-	font = TTF_OpenFont("DroidSans.ttf", 30);	
-	if (!font)
-		return false;
+	for (int i = 0; i < 5; i++)
+	{
+		tiles[i].x = 32*i;
+		tiles[i].y = 0;
+		tiles[i].w = 32;
+		tiles[i].h = 32;
+	}
+	
+	tilemap = loadImage("tiles.png");
 
 	return true;
 }
 
+void PlayState::Update(GameEngine* game) 
+{
+
+}
+
+void PlayState::Draw(GameEngine* game) 
+{
+	SDL_FillRect(game->screen, 0, SDL_MapRGB(game->screen->format, 0, 0, 0));
+
+	if (SDL_MUSTLOCK(game->screen))
+		if (SDL_LockSurface(game->screen) < 0)
+			return;
+
+	applySurface(tilemap, game->screen, 20, 20);
+
+	if (SDL_MUSTLOCK(game->screen))
+		SDL_UnlockSurface(game->screen);
+
+	SDL_Flip(game->screen);
+}
+
 void PlayState::Cleanup()
 {
-	SDL_FreeSurface(textSurface);
-	TTF_CloseFont(font);
+	SDL_FreeSurface(tilemap);
 }
 
 void PlayState::Pause()
@@ -26,7 +52,7 @@ void PlayState::Pause()
 
 void PlayState::Resume()
 {
-
+	
 }
 
 void PlayState::HandleEvents(GameEngine* game)
@@ -46,24 +72,10 @@ void PlayState::HandleEvents(GameEngine* game)
 						break;
 
 					default:
+						// stop yelling at me gcc
 						break;
 				}
 				break;
 		}
 	}
-}
-
-void PlayState::Update(GameEngine* game)
-{
-
-}
-
-void PlayState::Draw(GameEngine* game)
-{
-	SDL_Color textColor = { 255, 0, 0 };
-	textSurface = TTF_RenderText_Solid(font, "Poopy butts", textColor);
-
-	SDL_BlitSurface(textSurface, NULL, game->screen, NULL);
-
-	SDL_UpdateRect(game->screen, 0, 0, 0, 0);
 }
