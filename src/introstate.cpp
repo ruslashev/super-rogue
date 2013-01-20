@@ -31,7 +31,7 @@ void IntroState::Draw(GameEngine* game)
 	TTF_SizeText(font, "Super rogue", &w, NULL);
 	textSurface = TTF_RenderText_Shaded(font, "Super rogue", SDL_Color{255, 255, 255}, SDL_Color{20, 20, 20});
 
-	applySurface(textSurface, game->screen, 400-w/2, 120);
+	applySurface(textSurface, game->screen, 400-w/2, 120, NULL);
 
 
 	if (SDL_MUSTLOCK(game->screen))

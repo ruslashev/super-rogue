@@ -25,9 +25,11 @@ protected:
 
 private:
 	static PlayState m_PlayState;
-	
+
 	SDL_Rect tiles[5];
 	SDL_Surface* tilemap;
+
+	static const unsigned char map[10][10];
 };
 
 #endif

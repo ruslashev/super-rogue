@@ -4,6 +4,19 @@
 
 PlayState PlayState::m_PlayState;
 
+const unsigned char PlayState::map[10][10] = {
+	{3,3,3,3,3,3,3,3,3,3},
+	{3,0,0,0,0,2,2,0,0,3},
+	{3,0,1,0,2,4,4,2,0,3},
+	{3,1,1,1,0,2,2,4,2,3},
+	{3,1,1,0,0,2,2,4,2,3},
+	{3,0,0,0,2,3,3,3,4,3},
+	{3,0,0,0,2,3,4,4,4,3},
+	{3,0,0,0,2,3,3,3,4,3},
+	{3,0,0,0,0,2,2,3,4,3},
+	{3,3,3,3,3,3,3,3,3,3}
+};
+
 bool PlayState::Init()
 {
 	for (int i = 0; i < 5; i++)
@@ -13,7 +26,6 @@ bool PlayState::Init()
 		tiles[i].w = 32;
 		tiles[i].h = 32;
 	}
-	
 	tilemap = loadImage("tiles.png");
 
 	return true;
@@ -32,7 +44,13 @@ void PlayState::Draw(GameEngine* game)
 		if (SDL_LockSurface(game->screen) < 0)
 			return;
 
-	applySurface(tilemap, game->screen, 20, 20);
+	for (int y = 0; y < 10; y++)
+	{
+		for (int x = 0; x < 10; x++)
+		{
+			applySurface(tilemap, game->screen, x*32, y*32, &tiles[map[y][x]]);
+		}
+	}
 
 	if (SDL_MUSTLOCK(game->screen))
 		SDL_UnlockSurface(game->screen);

@@ -19,12 +19,12 @@ SDL_Surface* loadImage(std::string filename)
 	return optimizedImage;
 }
 
-void applySurface(SDL_Surface* source, SDL_Surface* destination, int x, int y)
+void applySurface(SDL_Surface* source, SDL_Surface* destination, int x, int y, SDL_Rect* clip)
 {
 	SDL_Rect offset;
 
 	offset.x = x;
 	offset.y = y;
 
-	SDL_BlitSurface(source, NULL, destination, &offset);
+	SDL_BlitSurface(source, clip, destination, &offset);
 }
