@@ -1,5 +1,5 @@
-#ifndef PLAYSTATE_H
-#define PLAYSTATE_H
+#ifndef PLAYSTATE_HPP
+#define PLAYSTATE_HPP
 
 #include "gameengine.hpp"
 
@@ -25,6 +25,8 @@ protected:
 
 private:
 	static PlayState m_PlayState;
+
+	std::vector<Entity> Entities;
 
 	SDL_Rect tiles[5];
 	SDL_Surface* tilemap;

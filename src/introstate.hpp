@@ -1,5 +1,5 @@
-#ifndef INTROSTATE_H
-#define INTROSTATE_H
+#ifndef INTROSTATE_HPP
+#define INTROSTATE_HPP
 
 #include "gameengine.hpp"
 

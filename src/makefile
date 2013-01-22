@@ -5,7 +5,7 @@ OBJS = $(patsubst ./%.cpp, ../objs/%.o, $(shell find . -type f -name "*.cpp" ))
 EXECNAME = super-rogue
 LIBS = -lSDL_ttf -lSDL_image -lSDL
 
-../objs/%.o: ./%.cpp
+../objs/%.o: ./%.cpp ./%.hpp
 	@mkdir ../objs -p
 	g++ -c -o $@ $< $(CFLAGS) $(DEBUG)
 

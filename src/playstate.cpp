@@ -28,6 +28,8 @@ bool PlayState::Init()
 	}
 	tilemap = loadImage("tiles.png");
 
+	Entities.push_back(AABB(33, 33, 20, 20));
+
 	return true;
 }
 
@@ -50,6 +52,11 @@ void PlayState::Draw(GameEngine* game)
 		{
 			applySurface(tilemap, game->screen, x*32, y*32, &tiles[map[y][x]]);
 		}
+	}
+
+	for (std::vector<Entity>::iterator e = Entities.begin(); e != Entities.end(); e++)
+	{
+		e->Draw(game->screen);
 	}
 
 	if (SDL_MUSTLOCK(game->screen))

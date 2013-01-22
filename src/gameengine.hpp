@@ -1,5 +1,5 @@
-#ifndef GAMEENGINE_H
-#define GAMEENGINE_H
+#ifndef GAMEENGINE_HPP
+#define GAMEENGINE_HPP
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "utils.hpp"
+#include "entity.hpp"
 
 using namespace std;
 
