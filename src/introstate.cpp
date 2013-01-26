@@ -23,9 +23,12 @@ void IntroState::Draw(GameEngine* game)
 {
 	SDL_FillRect(game->screen, 0, SDL_MapRGB(game->screen->format, 0, 0, 0));
 
-	if (SDL_MUSTLOCK(game->screen))
-		if (SDL_LockSurface(game->screen) < 0)
+	if (SDL_MUSTLOCK(game->screen)) {
+		if (SDL_LockSurface(game->screen) < 0) {
+			fprintf(stderr, "Failed to lock screen surface: %s\n", SDL_GetError());
 			return;
+		}
+	}
 
 	int w;
 	TTF_SizeText(font, "Super rogue", &w, NULL);
@@ -33,11 +36,8 @@ void IntroState::Draw(GameEngine* game)
 
 	applySurface(textSurface, game->screen, 400-w/2, 120, NULL);
 
-
-	if (SDL_MUSTLOCK(game->screen))
-		SDL_UnlockSurface(game->screen);
-
-	SDL_Flip(game->screen);
+	SDL_UnlockSurface(game->screen);
+	SDL_UpdateRect(game->screen, 0, 0, 0, 0);
 }
 
 void IntroState::Cleanup()

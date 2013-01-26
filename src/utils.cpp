@@ -7,15 +7,15 @@ SDL_Surface* loadImage(std::string filename)
 
 	loadedImage = IMG_Load(filename.c_str());
 
-	//If the image loaded
 	if (loadedImage != NULL) {
 		//Create an optimized image
-		optimizedImage = SDL_DisplayFormat(loadedImage);
+		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
 
-		//Free the old image
 		SDL_FreeSurface(loadedImage);
+	} else {
+		fprintf(stderr, "Failed to load image file: %s\n", filename.c_str());
 	}
-
+	
 	return optimizedImage;
 }
 

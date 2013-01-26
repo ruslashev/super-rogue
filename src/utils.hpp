@@ -4,7 +4,12 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_image.h>
+#include <vector>
 #include <string>
+#include <set>
+#include <iostream>
+
+using namespace std;
 
 SDL_Surface* loadImage(std::string filename);
 void applySurface(SDL_Surface* source, SDL_Surface* destination, int x, int y, SDL_Rect* clip);
@@ -12,8 +17,6 @@ void applySurface(SDL_Surface* source, SDL_Surface* destination, int x, int y, S
 struct AABB
 {
 	int x, y, width, height;
-
-	AABB(int x, int y, int width, int height) : x(x), y(y), width(width), height(height) { }
 };
 
 #endif
