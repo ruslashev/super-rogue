@@ -16,7 +16,12 @@ bool IntroState::Init()
 
 void IntroState::Update(GameEngine* game)
 {
-
+	if (game->Keys[SDLK_ESCAPE]) {
+		game->Quit();
+	}
+	if (game->Keys[SDLK_SPACE]) {
+		game->ChangeState(PlayState::Instance());
+	}
 }
 
 void IntroState::Draw(GameEngine* game)
@@ -54,33 +59,4 @@ void IntroState::Pause()
 void IntroState::Resume()
 {
 	
-}
-
-void IntroState::HandleEvents(GameEngine* game)
-{
-	SDL_Event event;
-
-	if (SDL_PollEvent(&event)) {
-		switch (event.type) {
-			case SDL_QUIT:
-				game->Quit();
-				break;
-
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym) {
-					case SDLK_SPACE:
-						game->ChangeState(PlayState::Instance());
-						break;
-
-					case SDLK_ESCAPE:
-						game->Quit();
-						break;
-
-					default:
-						// stop yelling at me gcc
-						break;
-				}
-				break;
-		}
-	}
 }

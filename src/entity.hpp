@@ -24,6 +24,7 @@ public:
 
 	void FromImage(std::string filename);
 	void SetPosition(AABB position) { m_position = position; }
+	AABB GetPosition() { return m_position; }
 };
 
 #endif

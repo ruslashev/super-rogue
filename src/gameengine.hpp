@@ -25,6 +25,10 @@ public:
 
 	SDL_Surface* screen;
 
+	double dt;
+	double time;
+
+	bool Keys[322];
 private:
 	vector<GameState*> states;
 
@@ -41,7 +45,6 @@ public:
 	virtual void Pause() = 0;
 	virtual void Resume() = 0;
 
-	virtual void HandleEvents(GameEngine* game) = 0;
 	virtual void Update(GameEngine* game) = 0;
 	virtual void Draw(GameEngine* game) = 0;
 

@@ -19,6 +19,14 @@ bool GameEngine::Init(const char* title, int width, int height, int bpp)
 		return false;
 	}
 
+	for (int i = 0; i < 322; i++) {
+		Keys[i] = false;
+	}
+	SDL_EnableKeyRepeat(0,0);
+
+	dt = 0.0;
+	time = 0.0;
+
 	m_running = true;
 	
 	return true;
@@ -83,7 +91,22 @@ void GameEngine::PopState()
 
 void GameEngine::HandleEvents() 
 {
-	states.back()->HandleEvents(this);
+	SDL_Event event;
+
+	if (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_KEYDOWN:
+				Keys[event.key.keysym.sym] = true;
+				break;
+			case SDL_KEYUP:
+				Keys[event.key.keysym.sym] = false;
+				break;
+
+			case SDL_QUIT:
+				Quit();
+				break;
+		}
+	}
 }
 
 void GameEngine::Update() 

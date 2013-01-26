@@ -8,8 +8,8 @@ void Entity::Update()
 void Entity::Draw(SDL_Surface* destination)
 {
 	SDL_Rect offset;
-	offset.x = m_position.x;
-	offset.y = m_position.y;
+	offset.x = (int)m_position.x;
+	offset.y = (int)m_position.y;
 
 	SDL_BlitSurface(m_surface, NULL, destination, &offset);
 }

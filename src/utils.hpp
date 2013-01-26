@@ -16,7 +16,8 @@ void applySurface(SDL_Surface* source, SDL_Surface* destination, int x, int y, S
 
 struct AABB
 {
-	int x, y, width, height;
+	float x, y;
+	int width, height;
 };
 
 #endif

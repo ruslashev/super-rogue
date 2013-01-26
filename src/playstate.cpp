@@ -36,7 +36,22 @@ bool PlayState::Init()
 
 void PlayState::Update(GameEngine* game) 
 {
+	if (game->Keys[SDLK_ESCAPE]) {
+		game->Quit();
+	}
 
+	if (game->Keys[SDLK_UP]) {
+		knight.SetPosition(AABB { knight.GetPosition().x, knight.GetPosition().y-(float)(3*game->dt), 30, 30 });
+	}
+	if (game->Keys[SDLK_DOWN]) {
+		knight.SetPosition(AABB { knight.GetPosition().x, knight.GetPosition().y+(float)(3*game->dt), 30, 30 });
+	}
+	if (game->Keys[SDLK_LEFT]) {
+		knight.SetPosition(AABB { knight.GetPosition().x-(float)(3*game->dt), knight.GetPosition().y, 30, 30 });
+	}
+	if (game->Keys[SDLK_RIGHT]) {
+		knight.SetPosition(AABB { knight.GetPosition().x+(float)(3*game->dt), knight.GetPosition().y, 30, 30 });
+	}
 }
 
 void PlayState::Draw(GameEngine* game) 
@@ -81,29 +96,4 @@ void PlayState::Pause()
 void PlayState::Resume()
 {
 	
-}
-
-void PlayState::HandleEvents(GameEngine* game)
-{
-	SDL_Event event;
-
-	if (SDL_PollEvent(&event)) {
-		switch (event.type) {
-			case SDL_QUIT:
-				game->Quit();
-				break;
-
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym) {
-					case SDLK_ESCAPE:
-						game->Quit();
-						break;
-
-					default:
-						// stop yelling at me gcc
-						break;
-				}
-				break;
-		}
-	}
 }
