@@ -4,18 +4,15 @@
 
 PlayState PlayState::m_PlayState;
 
-bool PlayState::Init()
+bool PlayState::Init(GameEngine* game)
 {
-
-
 	return true;
 }
 
 void PlayState::Update(GameEngine* game)
 {
-/*	if (game->KeyPressed(GLFW_KEY_SPACE)) {
+	if (glfwGetKey(GLFW_KEY_ESC) || ((glfwGetKey(GLFW_KEY_LCTRL) || glfwGetKey(GLFW_KEY_RCTRL)) && (glfwGetKey('C') || glfwGetKey('W') || glfwGetKey('D'))))
 		game->Quit();
-	}*/
 }
 
 void PlayState::Draw(GameEngine* game)

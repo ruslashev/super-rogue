@@ -6,7 +6,7 @@
 class PlayState : public GameState
 {
 public:
-	bool Init();
+	bool Init(GameEngine* game);
 	void Cleanup();
 
 	void Pause();

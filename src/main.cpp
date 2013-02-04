@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 		// while (accumulator >= game.dt)
 		// {
 			game.Update();
-		game.HandleEvents();
+			game.HandleEvents();
 			//game.time += game.dt;
 			// accumulator -= game.dt;
 		// }

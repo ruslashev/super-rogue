@@ -11,7 +11,7 @@ LIBS = -lglfw -lGLEW -lGL
 
 ../$(EXECNAME): $(OBJS)
 	g++ -o $@ $^ $(WARNINGS) $(CFLAGS) $(LIBS)
-	#cd .. && ./super-rogue
+#	cd .. && ./super-rogue
 
 clean:
 	-rm -rf ../objs ../$(EXECNAME)

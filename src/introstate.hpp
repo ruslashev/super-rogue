@@ -6,7 +6,7 @@
 class IntroState : public GameState
 {
 public:
-	bool Init();
+	bool Init(GameEngine* game);
 	void Cleanup();
 
 	void Pause();
@@ -25,7 +25,9 @@ protected:
 private:
 	static IntroState m_IntroState;
 
-
+	glm::mat4 model, view, projection;
+	GLuint vertexShader, fragmentShader, shaderProgram;
+	GLint posAttrib, mvpUniform;
 };
 
 #endif

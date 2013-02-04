@@ -17,6 +17,8 @@
 
 using namespace std;
 
+bool LoadShader(GLenum type, GLuint& shader, const char* filename);
 
+bool LinkShaderProgram(GLuint program);
 
 #endif
