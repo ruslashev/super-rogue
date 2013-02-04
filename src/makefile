@@ -1,6 +1,6 @@
 WARNINGS = -Wall
 DEBUG = 
-CFLAGS = -std=c++0x -I/usr/local/include -L/usr/local/lib
+CFLAGS = -std=c++0x -I/usr/local/include
 OBJS = $(patsubst ./%.cpp, ../objs/%.o, $(shell find . -type f -name "*.cpp" ))
 EXECNAME = super-rogue
 LIBS = -lglfw -lGLEW -lGL

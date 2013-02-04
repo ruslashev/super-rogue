@@ -23,7 +23,10 @@ public:
 	bool Running() { return m_running; }
 	void Quit() { m_running = false; }
 
+	bool LoadShader(GLenum type, GLuint& shader, const char* filename);
+
 private:
+	int windowWidth, windowHeight;
 	vector<GameState*> states;
 
 	bool m_running;
