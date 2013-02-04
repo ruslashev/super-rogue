@@ -1,31 +1,8 @@
 #include "gameengine.hpp"
 
-bool GameEngine::Init(const char* title, int width, int height, int bpp)
+bool GameEngine::Init(const char* title, int width, int height)
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
-		return false;
-	}
 
-	SDL_WM_SetCaption(title, title);
-
-	if (!(screen = SDL_SetVideoMode(width, height, bpp, SDL_SWSURFACE))) {
-		fprintf(stderr, "Failed to set video mode: %s\n", SDL_GetError());
-		return false;
-	}
-
-	if (TTF_Init() == -1) {
-		fprintf(stderr, "Failed to initialize TTF library: %s\n", TTF_GetError());
-		return false;
-	}
-
-	for (int i = 0; i < 322; i++) {
-		Keys[i] = false;
-	}
-	SDL_EnableKeyRepeat(0,0);
-
-	dt = 0.0;
-	time = 0.0;
 
 	m_running = true;
 	
@@ -35,22 +12,19 @@ bool GameEngine::Init(const char* title, int width, int height, int bpp)
 void GameEngine::Cleanup()
 {
 	// cleanup the all states
-	while (!states.empty())
-	{
+	while (!states.empty()) {
 		states.back()->Cleanup();
 		states.pop_back();
 	}
 
-	TTF_Quit();
-
-	SDL_Quit();
+	// glfwCloseWindow();
+	// glfwTerminate();
 }
 
 void GameEngine::ChangeState(GameState* state) 
 {
 	// cleanup the current state
-	if (!states.empty())
-	{
+	if (!states.empty()) {
 		states.back()->Cleanup();
 		states.pop_back();
 	}
@@ -63,8 +37,7 @@ void GameEngine::ChangeState(GameState* state)
 void GameEngine::PushState(GameState* state)
 {
 	// pause current state
-	if (!states.empty())
-	{
+	if (!states.empty()) {
 		states.back()->Pause();
 	}
 	
@@ -76,37 +49,20 @@ void GameEngine::PushState(GameState* state)
 void GameEngine::PopState()
 {
 	// cleanup the current state
-	if (!states.empty())
-	{
+	if (!states.empty()) {
 		states.back()->Cleanup();
 		states.pop_back();
 	}
 	
 	// resume previous state
-	if (!states.empty())
-	{
+	if (!states.empty()) {
 		states.back()->Resume();
 	}
 }
 
 void GameEngine::HandleEvents() 
 {
-	SDL_Event event;
 
-	if (SDL_PollEvent(&event)) {
-		switch (event.type) {
-			case SDL_KEYDOWN:
-				Keys[event.key.keysym.sym] = true;
-				break;
-			case SDL_KEYUP:
-				Keys[event.key.keysym.sym] = false;
-				break;
-
-			case SDL_QUIT:
-				Quit();
-				break;
-		}
-	}
 }
 
 void GameEngine::Update() 
@@ -117,4 +73,41 @@ void GameEngine::Update()
 void GameEngine::Draw() 
 {
 	states.back()->Draw(this);
+}
+
+bool GameEngine::LoadShader(GLenum type, GLuint& shader, std::string filename)
+{
+	std::ifstream fileStream (filename.c_str());
+	if (!fileStream.good()) {
+		fprintf(stderr, "Failed to open shader \"%s\"\n", filename.c_str());
+		return false;
+	}
+
+	std::string str;
+	fileStream.seekg(0, std::ios::end);
+	str.resize(fileStream.tellg());
+	fileStream.seekg(0, std::ios::beg);
+	fileStream.read(&str[0], str.size());
+	fileStream.close();
+
+	const char* source = str.c_str();
+	
+	shader = glCreateShader(type);
+	glShaderSource(shader, 1, &source, NULL);
+	glCompileShader(shader);
+	
+	GLint compileSuccess;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &compileSuccess);
+	if (compileSuccess == GL_FALSE) {		
+		GLint infoLogLength;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+		char compileLog[infoLogLength+1];
+		glGetShaderInfoLog(shader, infoLogLength, NULL, compileLog);
+		fprintf(strerr, "Shader \"%s\" failed to compile. Error log:\n%s", filename.c_str(), compileLog);
+		glDeleteShader(shader);
+		return false;
+	}
+
+	return true;
 }

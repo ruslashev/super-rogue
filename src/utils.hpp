@@ -1,23 +1,21 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
-#include <SDL/SDL_image.h>
+#include <GL/glew.h>
+#include <GL/glfw.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/noise.hpp>
+#include <ctime>
+#include <math.h>
 #include <vector>
 #include <string>
-#include <set>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
-SDL_Surface* loadImage(std::string filename);
-void applySurface(SDL_Surface* source, SDL_Surface* destination, int x, int y, SDL_Rect* clip);
 
-struct AABB
-{
-	float x, y;
-	int width, height;
-};
 
 #endif

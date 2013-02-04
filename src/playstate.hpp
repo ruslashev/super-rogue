@@ -25,14 +25,7 @@ protected:
 private:
 	static PlayState m_PlayState;
 
-	vector<Entity*> m_Entities;
 
-	Entity knight;
-	
-	SDL_Rect tiles[5];
-	SDL_Surface* tilemap;
-
-	static const unsigned char gamemap[10][10];
 };
 
 #endif

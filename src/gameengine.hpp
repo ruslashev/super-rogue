@@ -9,7 +9,7 @@ class GameState;
 class GameEngine
 {
 public:
-	bool Init(const char* title, int width=800, int height=600, int bpp=32);
+	bool Init(const char* title, int width=800, int height=600);
 	void Cleanup();
 	
 	void ChangeState(GameState* state);
@@ -23,17 +23,10 @@ public:
 	bool Running() { return m_running; }
 	void Quit() { m_running = false; }
 
-	SDL_Surface* screen;
-
-	double dt;
-	double time;
-
-	bool Keys[322];
 private:
 	vector<GameState*> states;
 
 	bool m_running;
-	bool m_fullscreen;
 };
 
 class GameState

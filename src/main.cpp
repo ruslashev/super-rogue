@@ -12,25 +12,27 @@ int main(int argc, char *argv[])
 	
 	game.ChangeState(IntroState::Instance());
 	
+	// double currentTime = SDL_GetTicks();
+	// double accumulator = 0.0;
 
-	const double constDT = 0.01;
-	double currentTime = SDL_GetTicks();
-
+	//game.dt = 1 / 60.f;
+	//game.time = 0.0;
+	
 	while (game.Running())
 	{
-		double newTime = SDL_GetTicks();
-		game.dt += min(newTime-currentTime, 0.25);
-		currentTime = newTime;
+		// double newTime = SDL_GetTicks();
+		// accumulator += min(newTime-currentTime, 0.25);
+		// currentTime = newTime;
 
-		game.HandleEvents();
-
-		while (game.dt >= constDT)
-		{
+		// while (accumulator >= game.dt)
+		// {
 			game.Update();
-			game.time += constDT;
-			game.dt -= constDT;
-		}
+		game.HandleEvents();
+			//game.time += game.dt;
+			// accumulator -= game.dt;
+		// }
 
+		// game.alpha = accumulator / game.dt;
 		game.Draw();
 	}
 	

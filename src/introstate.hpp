@@ -25,9 +25,7 @@ protected:
 private:
 	static IntroState m_IntroState;
 
-	TTF_Font* font;
-	SDL_Surface* textSurface;
+
 };
 
 #endif
-
