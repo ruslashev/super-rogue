@@ -14,7 +14,7 @@ bool GameEngine::Init(const char* title, int width, int height)
 
 	windowWidth = width;
 	windowHeight = height;
-	if (!glfwOpenWindow(width, height, 0, 0, 0, 0, 24, 8, GLFW_WINDOW)) {
+	if (!glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, GLFW_WINDOW)) {
 		fprintf(stderr, "Failed to open window\n");
 		return false;
 	}
@@ -65,9 +65,7 @@ void GameEngine::ChangeState(GameState* state)
 	states.push_back(state);
 	if (!states.back()->Init(this))
 	{
-		states.back()->Cleanup();
-		states.pop_back();
-		exit(1);
+		PopState();
 	}
 }
 
@@ -82,9 +80,7 @@ void GameEngine::PushState(GameState* state)
 	states.push_back(state);
 	if (!states.back()->Init(this))
 	{
-		states.back()->Cleanup();
-		states.pop_back();
-		exit(1);
+		PopState();
 	}
 }
 
@@ -99,6 +95,8 @@ void GameEngine::PopState()
 	// resume previous state
 	if (!states.empty()) {
 		states.back()->Resume();
+	} else {
+		Cleanup();
 	}
 }
 

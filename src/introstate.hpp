@@ -28,6 +28,9 @@ private:
 	glm::mat4 model, view, projection;
 	GLuint vertexShader, fragmentShader, shaderProgram;
 	GLint posAttrib, mvpUniform;
+
+	GLuint testVbo;
+	vector<glm::vec3> vertices;
 };
 
 #endif
