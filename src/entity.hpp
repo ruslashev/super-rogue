@@ -5,10 +5,14 @@
 
 class BaseEntity
 {
+protected:
+	glm::vec3 position;
 public:
-	// virtual bool Init() = 0;
-	virtual void Update() = 0;
-	virtual void Draw() = 0;
+	void Update();
+	void Draw();
+
+	void SetPosition(glm::vec3 newPos) { position = newPos; }
+	glm::vec3 GetPosition() { return position; }
 };
 
 class Entity : public BaseEntity
@@ -16,10 +20,7 @@ class Entity : public BaseEntity
 private:
 	
 public:
-	~Entity();
-
-	void Update();
-	void Draw();
+	std::vector<glm::vec3> vertices;
 };
 
 #endif

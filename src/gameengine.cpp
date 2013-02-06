@@ -26,7 +26,7 @@ bool GameEngine::Init(const char* title, int width, int height)
 	
 	GLenum glewInitStatus = glewInit();
 	if (glewInitStatus != GLEW_OK) {
-		fprintf(stderr, "GLEW failed to initialize: %s\n", glewGetErrorString(glewInitStatus));
+		fprintf(stderr, "Failed to initialize GLEW: %s\n", glewGetErrorString(glewInitStatus));
 		return false;
 	}
 	

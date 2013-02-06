@@ -25,7 +25,14 @@ protected:
 private:
 	static PlayState m_PlayState;
 
+	static const unsigned char gamemap[10][10];
 
+	glm::mat4 model, view, projection;
+	GLuint vertexShader, fragmentShader, shaderProgram;
+	GLint posAttrib, mvpUniform;
+
+	GLuint testVbo;
+	Entity testEnt;
 };
 
 #endif
