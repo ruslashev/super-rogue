@@ -18,9 +18,15 @@ public:
 class Entity : public BaseEntity
 {
 private:
-	
+	GLuint vbo;
 public:
 	std::vector<glm::vec3> vertices;
+
+	void Update();
+	void Draw();
+	void Upload();
+
+	~Entity();
 };
 
 #endif

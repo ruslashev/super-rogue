@@ -37,9 +37,8 @@ bool PlayState::Init(GameEngine* game)
 	testEnt.vertices.push_back(glm::vec3(1.0, 0.0, 0.0));
 	testEnt.vertices.push_back(glm::vec3(0.0, 1.0, 0.0));
 	testEnt.vertices.push_back(glm::vec3(0.0, 0.0, 1.0));
-	glGenBuffers(1, &testVbo);
-	glBindBuffer(GL_ARRAY_BUFFER, testVbo);
-	glBufferData(GL_ARRAY_BUFFER, testEnt.vertices.size()*sizeof(testEnt.vertices[0]), testEnt.vertices.data(), GL_STATIC_DRAW);
+
+	testEnt.Upload();
 
 	return true;
 }
@@ -61,10 +60,9 @@ void PlayState::Draw(GameEngine* game)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glEnableVertexAttribArray(posAttrib);
-	glBindBuffer(GL_ARRAY_BUFFER, testVbo);
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-	glDrawArrays(GL_TRIANGLES, 0, testEnt.vertices.size());
+	
+	testEnt.Draw();
 
 	glDisableVertexAttribArray(posAttrib);
 
@@ -73,8 +71,6 @@ void PlayState::Draw(GameEngine* game)
 
 void PlayState::Cleanup()
 {
-	glDeleteBuffers(1, &testVbo);
-
 	glDetachShader(shaderProgram, vertexShader);	
 	glDetachShader(shaderProgram, fragmentShader);
 	glDeleteProgram(shaderProgram);

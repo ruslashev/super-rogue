@@ -31,7 +31,6 @@ private:
 	GLuint vertexShader, fragmentShader, shaderProgram;
 	GLint posAttrib, mvpUniform;
 
-	GLuint testVbo;
 	Entity testEnt;
 };
 
