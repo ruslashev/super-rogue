@@ -27,11 +27,13 @@ private:
 
 	static const unsigned char gamemap[10][10];
 
-	glm::mat4 model, view, projection;
+	glm::mat4 Model, View, Projection;
 	GLuint vertexShader, fragmentShader, shaderProgram;
 	GLint posAttrib, mvpUniform;
 
 	Entity testEnt;
+	Player testPlayer;
+	MouseHelper mouseHelper;
 };
 
 #endif

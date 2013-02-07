@@ -24,6 +24,9 @@ public:
 	void Quit() { m_running = false; }
 
 	int windowWidth, windowHeight;
+	float dt;
+	float time;
+
 private:
 	vector<GameState*> states;
 

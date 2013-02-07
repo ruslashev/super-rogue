@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 	// double currentTime = SDL_GetTicks();
 	// double accumulator = 0.0;
 
-	//game.dt = 1 / 60.f;
-	//game.time = 0.0;
+	game.dt = 1 / 60.f; // welp
+	game.time = 0.0;
 	
 	while (game.Running())
 	{
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 		// {
 			game.Update();
 			game.HandleEvents();
-			//game.time += game.dt;
+			game.time += game.dt;
 			// accumulator -= game.dt;
 		// }
 

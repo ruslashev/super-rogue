@@ -31,24 +31,70 @@ bool PlayState::Init(GameEngine* game)
 	glUseProgram(shaderProgram);
 	posAttrib = glGetAttribLocation(shaderProgram, "vposition");
 
-	projection = glm::perspective(60.f, (float)game->windowWidth/(float)game->windowHeight, 1.f, 100.f);
+	Projection = glm::perspective(45.f, (float)game->windowWidth/(float)game->windowHeight, 1.f, 100.f);
 	mvpUniform = glGetUniformLocation(shaderProgram, "mvp");
 
-	testEnt.vertices.push_back(glm::vec3(1.0, 0.0, 0.0));
-	testEnt.vertices.push_back(glm::vec3(0.0, 1.0, 0.0));
-	testEnt.vertices.push_back(glm::vec3(0.0, 0.0, 1.0));
+	for (int y = 0; y < 10; y++)
+		for (int x = 0; x < 10; x++)
+		{
+			// byte tile = gamemap[x][y];
+
+			int tileSize = 1;
+			testEnt.vertices.push_back(glm::vec3(x*tileSize			, 0, y*tileSize			));
+			testEnt.vertices.push_back(glm::vec3(x*tileSize			, 0, y*tileSize+tileSize));
+			testEnt.vertices.push_back(glm::vec3(x*tileSize+tileSize, 0, y*tileSize			));
+			testEnt.vertices.push_back(glm::vec3(x*tileSize+tileSize, 0, y*tileSize			));
+			testEnt.vertices.push_back(glm::vec3(x*tileSize+tileSize, 0, y*tileSize+tileSize));
+			testEnt.vertices.push_back(glm::vec3(x*tileSize			, 0, y*tileSize+tileSize));
+		}
 
 	testEnt.Upload();
+
+	testEnt.SetPosition(glm::vec3(0, 0, 0));
+
+	testPlayer.SetPosition(glm::vec3(0, 0, 5));
 
 	return true;
 }
 
 void PlayState::Update(GameEngine* game)
 {
-	view = glm::lookAt(glm::vec3(0, 0, 5-glfwGetMouseWheel()), glm::vec3(0), glm::vec3(0, 1, 0));
+	glm::vec3 oldPos = testPlayer.GetPosition();
+	if (glfwGetKey('W'))
+		oldPos.z -= 10*game->dt;
 
-	glm::mat4 mvp = projection * view * glm::mat4(1);
+	if (glfwGetKey('S'))
+		oldPos.z += 10*game->dt;
+
+	if (glfwGetKey('A'))
+		oldPos.x -= 10*game->dt;
+
+	if (glfwGetKey('D'))
+		oldPos.x += 10*game->dt;
+
+	testPlayer.SetPosition(oldPos);
+
+	mouseHelper.Update(game->windowWidth, game->windowHeight);
+
+	testPlayer.rotation[0] = testPlayer.rotation[0] + mouseHelper.DeltaX;
+	testPlayer.rotation[1] = min(max(testPlayer.rotation[1] + mouseHelper.DeltaY, -90.f), 90.f);
+
+	View = glm::rotate(
+		glm::rotate(
+			glm::translate(
+				glm::mat4(1),
+				testPlayer.GetPosition()
+			),
+			testPlayer.rotation[1],
+			glm::vec3(1.0f, 0.0f, 0.0f)
+		),
+		testPlayer.rotation[0],
+		glm::vec3(0.0f, 1.0f, 0.0f)
+	);
+
+	glm::mat4 mvp = Projection * View;
 	glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, glm::value_ptr(mvp));
+
 
 	if (glfwGetKey(GLFW_KEY_ESC) || ((glfwGetKey(GLFW_KEY_LCTRL) || glfwGetKey(GLFW_KEY_RCTRL)) && (glfwGetKey('C') || glfwGetKey('W') || glfwGetKey('D'))))
 		game->Quit();

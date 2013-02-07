@@ -29,4 +29,10 @@ public:
 	~Entity();
 };
 
+class Player : public BaseEntity
+{
+public:
+	float rotation[2];
+};
+
 #endif
