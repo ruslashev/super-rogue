@@ -97,6 +97,7 @@ void GameEngine::PopState()
 		states.back()->Resume();
 	} else {
 		Cleanup();
+		exit(1);
 	}
 }
 

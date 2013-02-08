@@ -6,13 +6,13 @@
 class BaseEntity
 {
 protected:
-	glm::vec3 position;
+	vec3 m_position;
 public:
 	void Update();
 	void Draw();
 
-	void SetPosition(glm::vec3 newPos) { position = newPos; }
-	glm::vec3 GetPosition() { return position; }
+	void SetPosition(vec3 newPos) { m_position = newPos; }
+	vec3 GetPosition() { return m_position; }
 };
 
 class Entity : public BaseEntity
@@ -20,7 +20,7 @@ class Entity : public BaseEntity
 private:
 	GLuint vbo;
 public:
-	std::vector<glm::vec3> vertices;
+	vector<vec3> vertices;
 
 	void Update();
 	void Draw();
@@ -32,7 +32,8 @@ public:
 class Player : public BaseEntity
 {
 public:
-	float rotation[2];
+	float m_pitch;
+	float m_yaw;
 };
 
 #endif

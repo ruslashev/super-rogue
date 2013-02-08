@@ -29,11 +29,10 @@ private:
 
 	glm::mat4 Model, View, Projection;
 	GLuint vertexShader, fragmentShader, shaderProgram;
-	GLint posAttrib, mvpUniform;
+	GLint posAttrib, mvpUniform, timeUniform;
 
 	Entity testEnt;
 	Player testPlayer;
-	MouseHelper mouseHelper;
 };
 
 #endif

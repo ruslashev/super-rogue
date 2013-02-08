@@ -16,6 +16,7 @@
 #include <fstream>
 
 using namespace std;
+using namespace glm;
 
 bool LoadShader(GLenum type, GLuint& shader, const char* filename);
 
@@ -23,15 +24,6 @@ bool LinkShaderProgram(GLuint program);
 
 typedef unsigned char byte;
 
-class MouseHelper
-{
-private:
-	int oldMouseX, oldMouseY;
-	int newMouseX, newMouseY;
-public:
-	float DeltaX, DeltaY;
-
-	void Update(int windowWidth, int windowHeight);
-};
+void GetMouseDeltas(int windowWidth, int windowHeight, float smoothing, int& deltaX, int& deltaY);
 
 #endif

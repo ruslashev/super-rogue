@@ -50,11 +50,14 @@ bool LinkShaderProgram(GLuint program)
 	return true;
 }
 
-void MouseHelper::Update(int windowWidth, int windowHeight)
+void GetMouseDeltas(int windowWidth, int windowHeight, float smoothing, int& deltaX, int& deltaY)
 {
+	int oldMouseX, oldMouseY, newMouseX, newMouseY;
+
 	glfwGetMousePos(&oldMouseX, &oldMouseY);
 	glfwSetMousePos(windowWidth/2, windowHeight/2);
 	glfwGetMousePos(&newMouseX, &newMouseY);
-	DeltaX = (oldMouseX - newMouseX)/4.f;
-	DeltaY = (oldMouseY - newMouseY)/4.f;
+
+	deltaX = (oldMouseX - newMouseX)/smoothing;
+	deltaY = (oldMouseY - newMouseY)/smoothing;
 }
