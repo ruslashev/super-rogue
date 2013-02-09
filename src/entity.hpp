@@ -18,9 +18,9 @@ public:
 class Entity : public BaseEntity
 {
 private:
-	GLuint vbo;
+	GLuint m_vertex_VBO;
 public:
-	vector<vec3> vertices;
+	vector<vec3> m_vertices;
 
 	void Update();
 	void Draw();
@@ -31,12 +31,16 @@ public:
 
 class Player : public BaseEntity
 {
-public:
+private:
 	float m_pitch;
 	float m_yaw;
+public:
 
 	void Move(float distance, vec3 moveAxis);
 	void Rotate(float pitchAngle, float yawAngle);
+
+	float GetPitch() { return toDegrees(m_pitch); }
+	float GetYaw() { return toDegrees(m_yaw); }
 
 	mat4 lookAtMat4();
 };

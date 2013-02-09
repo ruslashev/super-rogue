@@ -2,21 +2,23 @@
 
 void Entity::Draw()
 {
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertex_VBO);
+	glDrawArrays(GL_TRIANGLES, 0, m_vertices.size());
 }
 
 void Entity::Upload()
 {
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(vertices[0]), vertices.data(), GL_STATIC_DRAW);
+	glGenBuffers(1, &m_vertex_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertex_VBO);
+	glBufferData(GL_ARRAY_BUFFER, m_vertices.size()*sizeof(m_vertices[0]), m_vertices.data(), GL_STATIC_DRAW);
 }
 
 Entity::~Entity()
 {
-	glDeleteBuffers(1, &vbo);
+	if (m_vertex_VBO != 0)
+		glDeleteBuffers(1, &m_vertex_VBO);
 }
+
 
 void Player::Move(float distance, vec3 moveAxis)
 {
@@ -37,6 +39,11 @@ void Player::Rotate(float pitchAngle, float yawAngle)
 	m_pitch = std::max(-limit, std::min(m_pitch-toRadians(pitchAngle), limit));
 
 	m_yaw += toRadians(yawAngle);
+
+	if (m_yaw >= 2*M_PI)
+		m_yaw = 0;
+	if (m_yaw <= -2*M_PI)
+		m_yaw = 0;
 }
 
 mat4 Player::lookAtMat4()

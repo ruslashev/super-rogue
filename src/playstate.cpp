@@ -31,9 +31,9 @@ bool PlayState::Init(GameEngine* game)
 	glUseProgram(shaderProgram);
 	posAttrib = glGetAttribLocation(shaderProgram, "vposition");
 
-	Projection = perspective(60.f, (float)game->windowWidth/(float)game->windowHeight, 0.1f, 100.f);
-	mvpUniform = glGetUniformLocation(shaderProgram, "mvp");
-	timeUniform = glGetUniformLocation(shaderProgram, "time");
+	ProjectionMat = perspective(60.f, (float)game->windowWidth/(float)game->windowHeight, 0.1f, 100.f);
+	mvpUniformAttrib = glGetUniformLocation(shaderProgram, "mvp");
+	timeUniformAttrib = glGetUniformLocation(shaderProgram, "time");
 
 	for (int y = 0; y < 10; y++)
 		for (int x = 0; x < 10; x++)
@@ -41,12 +41,12 @@ bool PlayState::Init(GameEngine* game)
 			// byte tile = gamemap[x][y];
 
 			int tileSize = 1;
-			testEnt.vertices.push_back(vec3(x*tileSize			, 0, y*tileSize			));
-			testEnt.vertices.push_back(vec3(x*tileSize			, 0, y*tileSize+tileSize));
-			testEnt.vertices.push_back(vec3(x*tileSize+tileSize	, 0, y*tileSize			));
-			testEnt.vertices.push_back(vec3(x*tileSize+tileSize	, 0, y*tileSize			));
-			testEnt.vertices.push_back(vec3(x*tileSize+tileSize	, 0, y*tileSize+tileSize));
-			testEnt.vertices.push_back(vec3(x*tileSize			, 0, y*tileSize+tileSize));
+			testEnt.m_vertices.push_back(vec3(x*tileSize			, 0, y*tileSize			));
+			testEnt.m_vertices.push_back(vec3(x*tileSize			, 0, y*tileSize+tileSize));
+			testEnt.m_vertices.push_back(vec3(x*tileSize+tileSize	, 0, y*tileSize			));
+			testEnt.m_vertices.push_back(vec3(x*tileSize+tileSize	, 0, y*tileSize			));
+			testEnt.m_vertices.push_back(vec3(x*tileSize+tileSize	, 0, y*tileSize+tileSize));
+			testEnt.m_vertices.push_back(vec3(x*tileSize			, 0, y*tileSize+tileSize));
 		}
 
 	testEnt.Upload();
@@ -68,26 +68,16 @@ void PlayState::Update(GameEngine* game)
 	int mouseDeltaX, mouseDeltaY;
 	GetMouseDeltas(game->windowWidth, game->windowHeight, 1.f, mouseDeltaX, mouseDeltaY);
 
-	if (mouseDeltaX || mouseDeltaY) {
+	if (mouseDeltaX || mouseDeltaY)
 		testPlayer.Rotate(7.f*mouseDeltaY*game->dt, 7.f*mouseDeltaX*game->dt);
-	}
 	
-	/*
-	static int con = 0;
-	con++;
-	if (con >= 10)
-	{
-		printf("p %f\t\t y %f\n", testPlayer.m_pitch, testPlayer.m_yaw);
-		con = 0;
-	}
-	*/
 	
-	View = testPlayer.lookAtMat4();
+	ViewMat = testPlayer.lookAtMat4();
 
-	mat4 mvp = Projection * View;
-	glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, value_ptr(mvp));
+	mat4 mvp = ProjectionMat * ViewMat;
+	glUniformMatrix4fv(mvpUniformAttrib, 1, GL_FALSE, value_ptr(mvp));
 
-	glUniform1f(timeUniform, game->time);
+	glUniform1f(timeUniformAttrib, game->time);
 
 	if (glfwGetKey(GLFW_KEY_ESC) || ((glfwGetKey(GLFW_KEY_LCTRL) || glfwGetKey(GLFW_KEY_RCTRL)) && (glfwGetKey('C') || glfwGetKey('W') || glfwGetKey('D'))))
 		game->Quit();

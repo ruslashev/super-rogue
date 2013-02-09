@@ -44,9 +44,9 @@ bool GameEngine::Init(const char* title, int width, int height)
 void GameEngine::Cleanup()
 {
 	// cleanup the all states
-	while (!states.empty()) {
-		states.back()->Cleanup();
-		states.pop_back();
+	while (!m_states.empty()) {
+		m_states.back()->Cleanup();
+		m_states.pop_back();
 	}
 
 	glfwCloseWindow();
@@ -56,14 +56,14 @@ void GameEngine::Cleanup()
 void GameEngine::ChangeState(GameState* state) 
 {
 	// cleanup the current state
-	if (!states.empty()) {
-		states.back()->Cleanup();
-		states.pop_back();
+	if (!m_states.empty()) {
+		m_states.back()->Cleanup();
+		m_states.pop_back();
 	}
 
 	// store and init the new state
-	states.push_back(state);
-	if (!states.back()->Init(this))
+	m_states.push_back(state);
+	if (!m_states.back()->Init(this))
 	{
 		PopState();
 	}
@@ -72,13 +72,13 @@ void GameEngine::ChangeState(GameState* state)
 void GameEngine::PushState(GameState* state)
 {
 	// pause current state
-	if (!states.empty()) {
-		states.back()->Pause();
+	if (!m_states.empty()) {
+		m_states.back()->Pause();
 	}
 	
 	// store and init the new state
-	states.push_back(state);
-	if (!states.back()->Init(this))
+	m_states.push_back(state);
+	if (!m_states.back()->Init(this))
 	{
 		PopState();
 	}
@@ -87,14 +87,14 @@ void GameEngine::PushState(GameState* state)
 void GameEngine::PopState()
 {
 	// cleanup the current state
-	if (!states.empty()) {
-		states.back()->Cleanup();
-		states.pop_back();
+	if (!m_states.empty()) {
+		m_states.back()->Cleanup();
+		m_states.pop_back();
 	}
 	
 	// resume previous state
-	if (!states.empty()) {
-		states.back()->Resume();
+	if (!m_states.empty()) {
+		m_states.back()->Resume();
 	} else {
 		Cleanup();
 		exit(1);
@@ -111,10 +111,10 @@ void GameEngine::HandleEvents()
 
 void GameEngine::Update() 
 {
-	states.back()->Update(this);
+	m_states.back()->Update(this);
 }
 
 void GameEngine::Draw() 
 {
-	states.back()->Draw(this);
+	m_states.back()->Draw(this);
 }

@@ -28,7 +28,7 @@ public:
 	float time;
 
 private:
-	vector<GameState*> states;
+	vector<GameState*> m_states;
 
 	bool m_running;
 };
