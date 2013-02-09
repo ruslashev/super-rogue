@@ -26,4 +26,7 @@ typedef unsigned char byte;
 
 void GetMouseDeltas(int windowWidth, int windowHeight, float smoothing, int& deltaX, int& deltaY);
 
+template<class T> static inline T toRadians(T x) { return (x*M_PI)/180; }
+template<class T> static inline T toDegrees(T x) { return (x*180)/M_PI; }
+
 #endif

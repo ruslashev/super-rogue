@@ -34,6 +34,11 @@ class Player : public BaseEntity
 public:
 	float m_pitch;
 	float m_yaw;
+
+	void Move(float distance, vec3 moveAxis);
+	void Rotate(float pitchAngle, float yawAngle);
+
+	mat4 lookAtMat4();
 };
 
 #endif

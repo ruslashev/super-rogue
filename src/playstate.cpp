@@ -31,7 +31,7 @@ bool PlayState::Init(GameEngine* game)
 	glUseProgram(shaderProgram);
 	posAttrib = glGetAttribLocation(shaderProgram, "vposition");
 
-	Projection = perspective(45.f, (float)game->windowWidth/(float)game->windowHeight, 1.f, 100.f);
+	Projection = perspective(60.f, (float)game->windowWidth/(float)game->windowHeight, 0.1f, 100.f);
 	mvpUniform = glGetUniformLocation(shaderProgram, "mvp");
 	timeUniform = glGetUniformLocation(shaderProgram, "time");
 
@@ -60,29 +60,17 @@ bool PlayState::Init(GameEngine* game)
 
 void PlayState::Update(GameEngine* game)
 {
-	float movingHowMany = 0;
 	if (glfwGetKey('W'))
-		movingHowMany = 0.05;
+		testPlayer.Move(10*game->dt, vec3(1));
 	if (glfwGetKey('S'))
-		movingHowMany = -0.05;
-
-	if (movingHowMany)
-	{
-    	float lx = cos(testPlayer.m_yaw)*cos(testPlayer.m_pitch);
-    	float ly = sin(testPlayer.m_pitch);
-    	float lz = sin(testPlayer.m_yaw)*cos(testPlayer.m_pitch);
-
-		vec3 oldPos = testPlayer.GetPosition();
-		testPlayer.SetPosition(vec3(oldPos.x + movingHowMany*lx, oldPos.y + movingHowMany*ly, oldPos.z + movingHowMany*lz));
-	}
+		testPlayer.Move(-10*game->dt, vec3(1));
 
 	int mouseDeltaX, mouseDeltaY;
-	GetMouseDeltas(game->windowWidth, game->windowHeight, 2.7f, mouseDeltaX, mouseDeltaY);
+	GetMouseDeltas(game->windowWidth, game->windowHeight, 1.f, mouseDeltaX, mouseDeltaY);
 
-	if (mouseDeltaX)
-		testPlayer.m_yaw += M_PI/180*0.2*mouseDeltaX;
-	if (mouseDeltaY)
-		testPlayer.m_pitch -= M_PI/180*0.2*mouseDeltaY;
+	if (mouseDeltaX || mouseDeltaY) {
+		testPlayer.Rotate(7.f*mouseDeltaY*game->dt, 7.f*mouseDeltaX*game->dt);
+	}
 	
 	/*
 	static int con = 0;
@@ -94,8 +82,7 @@ void PlayState::Update(GameEngine* game)
 	}
 	*/
 	
-	vec3 pos = testPlayer.GetPosition();
-	View = lookAt(pos, vec3(pos.x+cos(testPlayer.m_yaw)*cos(testPlayer.m_pitch), pos.y+sin(testPlayer.m_pitch), pos.z+sin(testPlayer.m_yaw)*cos(testPlayer.m_pitch)), vec3(0, 1, 0));
+	View = testPlayer.lookAtMat4();
 
 	mat4 mvp = Projection * View;
 	glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, value_ptr(mvp));
