@@ -20,15 +20,33 @@ Entity::~Entity()
 }
 
 
-void Player::Move(float distance, vec3 moveAxis)
+void Player::MoveForward(float distance, vec3 moveAxis)
 {
 	vec3 newPos = m_position;
 
-    float lx = cos(m_yaw)*cos(m_pitch);
-    float ly = sin(m_pitch);
-    float lz = sin(m_yaw)*cos(m_pitch);
+	float lx = cos(m_yaw);
+	float ly = sin(m_pitch);
+	float lz = sin(m_yaw);
+
+	if (moveAxis.y)
+	{
+		lx *= cos(m_pitch);
+		lz *= cos(m_pitch);
+	}
 
 	newPos += vec3(lx*distance, ly*distance, lz*distance)*moveAxis;
+
+	SetPosition(newPos);
+}
+
+void Player::Strafe(float distance, vec3 moveAxis)
+{
+	vec3 newPos = m_position;
+
+	float lx = cos(m_yaw+M_PI/2);
+	float lz = sin(m_yaw+M_PI/2);
+
+	newPos += vec3(lx*distance, 0, lz*distance)*moveAxis;
 
 	SetPosition(newPos);
 }
@@ -46,7 +64,7 @@ void Player::Rotate(float pitchAngle, float yawAngle)
 		m_yaw = 0;
 }
 
-mat4 Player::lookAtMat4()
+mat4 Player::LookAtMat4()
 {
 	return lookAt(
 		m_position,

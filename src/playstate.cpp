@@ -41,12 +41,12 @@ bool PlayState::Init(GameEngine* game)
 			// byte tile = gamemap[x][y];
 
 			int tileSize = 1;
-			testEnt.m_vertices.push_back(vec3(x*tileSize			, 0, y*tileSize			));
-			testEnt.m_vertices.push_back(vec3(x*tileSize			, 0, y*tileSize+tileSize));
-			testEnt.m_vertices.push_back(vec3(x*tileSize+tileSize	, 0, y*tileSize			));
-			testEnt.m_vertices.push_back(vec3(x*tileSize+tileSize	, 0, y*tileSize			));
-			testEnt.m_vertices.push_back(vec3(x*tileSize+tileSize	, 0, y*tileSize+tileSize));
-			testEnt.m_vertices.push_back(vec3(x*tileSize			, 0, y*tileSize+tileSize));
+			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize			, 0, 1.2f*y*tileSize			));
+			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize			, 0, 1.2f*y*tileSize+tileSize));
+			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize+tileSize	, 0, 1.2f*y*tileSize			));
+			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize+tileSize	, 0, 1.2f*y*tileSize			));
+			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize+tileSize	, 0, 1.2f*y*tileSize+tileSize));
+			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize			, 0, 1.2f*y*tileSize+tileSize));
 		}
 
 	testEnt.Upload();
@@ -61,9 +61,14 @@ bool PlayState::Init(GameEngine* game)
 void PlayState::Update(GameEngine* game)
 {
 	if (glfwGetKey('W'))
-		testPlayer.Move(10*game->dt, vec3(1));
+		testPlayer.MoveForward(10*game->dt, vec3(1));
 	if (glfwGetKey('S'))
-		testPlayer.Move(-10*game->dt, vec3(1));
+		testPlayer.MoveForward(-10*game->dt, vec3(1));
+
+	if (glfwGetKey('A'))
+		testPlayer.Strafe(-10*game->dt, vec3(1));
+	if (glfwGetKey('D'))
+		testPlayer.Strafe(10*game->dt, vec3(1));
 
 	int mouseDeltaX, mouseDeltaY;
 	GetMouseDeltas(game->windowWidth, game->windowHeight, 1.f, mouseDeltaX, mouseDeltaY);
@@ -71,8 +76,15 @@ void PlayState::Update(GameEngine* game)
 	if (mouseDeltaX || mouseDeltaY)
 		testPlayer.Rotate(7.f*mouseDeltaY*game->dt, 7.f*mouseDeltaX*game->dt);
 	
+	// static int counter = 0;
+	// counter++;
+	// if (counter == 6)
+	// {
+	// 	printf("p.y %f\n", testPlayer.GetPosition().y);
+	// 	counter = 0;
+	// }
 	
-	ViewMat = testPlayer.lookAtMat4();
+	ViewMat = testPlayer.LookAtMat4();
 
 	mat4 mvp = ProjectionMat * ViewMat;
 	glUniformMatrix4fv(mvpUniformAttrib, 1, GL_FALSE, value_ptr(mvp));

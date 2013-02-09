@@ -36,13 +36,14 @@ private:
 	float m_yaw;
 public:
 
-	void Move(float distance, vec3 moveAxis);
+	void MoveForward(float distance, vec3 moveAxis);
+	void Strafe(float distance, vec3 moveAxis);
 	void Rotate(float pitchAngle, float yawAngle);
 
 	float GetPitch() { return toDegrees(m_pitch); }
 	float GetYaw() { return toDegrees(m_yaw); }
 
-	mat4 lookAtMat4();
+	mat4 LookAtMat4();
 };
 
 #endif
