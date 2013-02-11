@@ -33,6 +33,8 @@ private:
 
 	Entity testEnt;
 	Player testPlayer;
+
+	list<Entity> boxes;
 };
 
 #endif

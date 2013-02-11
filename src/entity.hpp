@@ -8,8 +8,8 @@ class BaseEntity
 protected:
 	vec3 m_position;
 public:
-	void Update();
-	void Draw();
+	virtual void Update() { };
+	virtual void Draw() { };
 
 	void SetPosition(vec3 newPos) { m_position = newPos; }
 	vec3 GetPosition() { return m_position; }
@@ -22,11 +22,20 @@ private:
 public:
 	vector<vec3> m_vertices;
 
+	Entity() {
+		static int welp = 0;
+		printf("OI HAI M8 MNAMES ENTETEE #%i\n", welp++);
+
+		m_position = vec3(0);
+	};
+	~Entity() {
+		if (m_vertex_VBO != 0)
+			glDeleteBuffers(1, &m_vertex_VBO);
+	};
+
 	void Update();
 	void Draw();
 	void Upload();
-
-	~Entity();
 };
 
 class Player : public BaseEntity

@@ -38,20 +38,14 @@ bool PlayState::Init(GameEngine* game)
 	for (int y = 0; y < 10; y++)
 		for (int x = 0; x < 10; x++)
 		{
-			// byte tile = gamemap[x][y];
+			boxes.push_back(Entity());
 
-			int tileSize = 1;
-			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize			, 0, 1.2f*y*tileSize			));
-			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize			, 0, 1.2f*y*tileSize+tileSize));
-			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize+tileSize	, 0, 1.2f*y*tileSize			));
-			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize+tileSize	, 0, 1.2f*y*tileSize			));
-			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize+tileSize	, 0, 1.2f*y*tileSize+tileSize));
-			testEnt.m_vertices.push_back(vec3(1.2f*x*tileSize			, 0, 1.2f*y*tileSize+tileSize));
+			boxes.back().m_vertices.clear();
+			boxes.back().m_vertices = MakeBox(vec3(x*3, 0, y*3), 1);
+			boxes.back().Upload();
+			// boxes.back().SetPosition(vec3(x*3, 0, y*3));
 		}
 
-	testEnt.Upload();
-
-	testEnt.SetPosition(vec3(0, 0, 0));
 
 	testPlayer.SetPosition(vec3(0, 4, 0));
 
@@ -72,7 +66,6 @@ void PlayState::Update(GameEngine* game)
 
 	int mouseDeltaX, mouseDeltaY;
 	GetMouseDeltas(game->windowWidth, game->windowHeight, 1.f, mouseDeltaX, mouseDeltaY);
-
 	if (mouseDeltaX || mouseDeltaY)
 		testPlayer.Rotate(7.f*mouseDeltaY*game->dt, 7.f*mouseDeltaX*game->dt);
 	
@@ -80,7 +73,7 @@ void PlayState::Update(GameEngine* game)
 	// counter++;
 	// if (counter == 6)
 	// {
-	// 	printf("p.y %f\n", testPlayer.GetPosition().y);
+	// 	printf("%f\t\t\t%f\n", testPlayer.GetPosition().x, testPlayer.GetPosition().z);
 	// 	counter = 0;
 	// }
 	
@@ -103,7 +96,10 @@ void PlayState::Draw(GameEngine* game)
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	
-	testEnt.Draw();
+	for (list<Entity>::iterator b = boxes.begin(); b != boxes.end(); b++)
+	{
+		b->Draw();
+	}
 
 	glDisableVertexAttribArray(posAttrib);
 

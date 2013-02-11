@@ -2,21 +2,26 @@
 
 void Entity::Draw()
 {
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertex_VBO);
-	glDrawArrays(GL_TRIANGLES, 0, m_vertices.size());
+	if (m_vertex_VBO)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_vertex_VBO);
+		glDrawArrays(GL_TRIANGLES, 0, m_vertices.size());
+	}
+}
+
+void Entity::Update()
+{
+	
 }
 
 void Entity::Upload()
 {
-	glGenBuffers(1, &m_vertex_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertex_VBO);
-	glBufferData(GL_ARRAY_BUFFER, m_vertices.size()*sizeof(m_vertices[0]), m_vertices.data(), GL_STATIC_DRAW);
-}
-
-Entity::~Entity()
-{
-	if (m_vertex_VBO != 0)
-		glDeleteBuffers(1, &m_vertex_VBO);
+	if (m_vertices.size() > 0)
+	{
+		glGenBuffers(1, &m_vertex_VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vertex_VBO);
+		glBufferData(GL_ARRAY_BUFFER, m_vertices.size()*sizeof(m_vertices[0]), m_vertices.data(), GL_STATIC_DRAW);
+	}
 }
 
 

@@ -61,3 +61,61 @@ void GetMouseDeltas(int windowWidth, int windowHeight, float smoothing, int& del
 	deltaX = (oldMouseX - newMouseX)/smoothing;
 	deltaY = (oldMouseY - newMouseY)/smoothing;
 }
+
+vector<vec3> MakeBox(vec3 position, int size)
+{
+	vector<vec3> vertices;
+
+	float x = position.x;
+	float y = position.y;
+	float z = position.z;
+	float x2 = position.x + size;
+	float y2 = position.y + size;
+	float z2 = position.z + size;
+
+	vertices.push_back( vec3( x , y , z ) );
+	vertices.push_back( vec3( x , y2, z ) );
+	vertices.push_back( vec3( x2, y2, z ) );
+	vertices.push_back( vec3( x , y , z ) );
+	vertices.push_back( vec3( x2, y2, z ) );
+	vertices.push_back( vec3( x2, y , z ) );
+
+	vertices.push_back( vec3( x , y , z2) );
+	vertices.push_back( vec3( x , y2, z2) );
+	vertices.push_back( vec3( x2, y2, z2) );
+	vertices.push_back( vec3( x , y , z2) );
+	vertices.push_back( vec3( x2, y2, z2) );
+	vertices.push_back( vec3( x2, y , z2) );
+
+
+	vertices.push_back( vec3( x , y , z ) );
+	vertices.push_back( vec3( x , y2, z ) );
+	vertices.push_back( vec3( x , y2, z2) );
+	vertices.push_back( vec3( x , y , z ) );
+	vertices.push_back( vec3( x , y2, z2) );
+	vertices.push_back( vec3( x , y , z2) );
+
+	vertices.push_back( vec3( x2, y , z ) );
+	vertices.push_back( vec3( x2, y2, z ) );
+	vertices.push_back( vec3( x2, y2, z2) );
+	vertices.push_back( vec3( x2, y , z ) );
+	vertices.push_back( vec3( x2, y2, z2) );
+	vertices.push_back( vec3( x2, y , z2) );
+
+
+	vertices.push_back( vec3( x , y , z ) );
+	vertices.push_back( vec3( x2, y , z ) );
+	vertices.push_back( vec3( x2, y , z2) );
+	vertices.push_back( vec3( x , y , z ) );
+	vertices.push_back( vec3( x2, y , z2) );
+	vertices.push_back( vec3( x , y , z2) );
+
+	vertices.push_back( vec3( x , y2, z ) );
+	vertices.push_back( vec3( x2, y2, z ) );
+	vertices.push_back( vec3( x2, y2, z2) );
+	vertices.push_back( vec3( x , y2, z ) );
+	vertices.push_back( vec3( x2, y2, z2) );
+	vertices.push_back( vec3( x , y2, z2) );
+
+	return vertices;
+}
