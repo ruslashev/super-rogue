@@ -31,10 +31,8 @@ private:
 	GLuint vertexShader, fragmentShader, shaderProgram;
 	GLint posAttrib, mvpUniformAttrib, timeUniformAttrib;
 
-	Entity testEnt;
+	forward_list<Drawable*> boxes;
 	Player testPlayer;
-
-	list<Entity> boxes;
 };
 
 #endif

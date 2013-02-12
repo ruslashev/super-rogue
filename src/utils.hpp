@@ -18,7 +18,7 @@
 #include <fstream>
 
 #include <vector>
-#include <list>
+#include <forward_list>
 
 using namespace std;
 using namespace glm;

@@ -1,27 +1,34 @@
 #include "entity.hpp"
 
-void Entity::Draw()
+void Drawable::Draw()
 {
-	if (m_vertex_VBO)
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, m_vertex_VBO);
+	if (m_posVBO) {
+		glBindBuffer(GL_ARRAY_BUFFER, m_posVBO);
 		glDrawArrays(GL_TRIANGLES, 0, m_vertices.size());
 	}
 }
 
-void Entity::Update()
+void Drawable::Upload()
 {
-	
+	if (m_vertices.size() > 0) {
+		glGenBuffers(1, &m_posVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, m_posVBO);
+		glBufferData(GL_ARRAY_BUFFER, m_vertices.size()*sizeof(m_vertices[0]), m_vertices.data(), GL_STATIC_DRAW);
+	} else {
+		fprintf(stderr, "Warning! Attempt to upload empty vertex data\n");
+	}
 }
 
-void Entity::Upload()
+Drawable::Drawable()
 {
-	if (m_vertices.size() > 0)
-	{
-		glGenBuffers(1, &m_vertex_VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, m_vertex_VBO);
-		glBufferData(GL_ARRAY_BUFFER, m_vertices.size()*sizeof(m_vertices[0]), m_vertices.data(), GL_STATIC_DRAW);
-	}
+	m_posVBO = 0;
+	m_position = vec3(0);
+}
+
+Drawable::~Drawable()
+{
+	if (m_posVBO != 0)
+		glDeleteBuffers(1, &m_posVBO);
 }
 
 
@@ -30,12 +37,13 @@ void Player::MoveForward(float distance, vec3 moveAxis)
 	vec3 newPos = m_position;
 
 	float lx = cos(m_yaw);
-	float ly = sin(m_pitch);
+	float ly = 0;
 	float lz = sin(m_yaw);
 
 	if (moveAxis.y)
 	{
 		lx *= cos(m_pitch);
+		ly = sin(m_pitch);
 		lz *= cos(m_pitch);
 	}
 

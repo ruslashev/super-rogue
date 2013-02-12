@@ -38,14 +38,17 @@ bool PlayState::Init(GameEngine* game)
 	for (int y = 0; y < 10; y++)
 		for (int x = 0; x < 10; x++)
 		{
-			boxes.push_back(Entity());
-
-			boxes.back().m_vertices.clear();
-			boxes.back().m_vertices = MakeBox(vec3(x*3, 0, y*3), 1);
-			boxes.back().Upload();
-			// boxes.back().SetPosition(vec3(x*3, 0, y*3));
+			boxes.push_front(new Drawable());
+			
+			boxes.front()->m_vertices.push_back(vec3(1.2f*x, 	0, 1.2f*y));
+			boxes.front()->m_vertices.push_back(vec3(1.2f*x, 	0, 1.2f*y+1));
+			boxes.front()->m_vertices.push_back(vec3(1.2f*x+1, 	0, 1.2f*y));
+			boxes.front()->m_vertices.push_back(vec3(1.2f*x+1, 	0, 1.2f*y));
+			boxes.front()->m_vertices.push_back(vec3(1.2f*x+1, 	0, 1.2f*y+1));
+			boxes.front()->m_vertices.push_back(vec3(1.2f*x, 	0, 1.2f*y+1));
+			
+			boxes.front()->Upload();
 		}
-
 
 	testPlayer.SetPosition(vec3(0, 4, 0));
 
@@ -66,6 +69,7 @@ void PlayState::Update(GameEngine* game)
 
 	int mouseDeltaX, mouseDeltaY;
 	GetMouseDeltas(game->windowWidth, game->windowHeight, 1.f, mouseDeltaX, mouseDeltaY);
+
 	if (mouseDeltaX || mouseDeltaY)
 		testPlayer.Rotate(7.f*mouseDeltaY*game->dt, 7.f*mouseDeltaX*game->dt);
 	
@@ -96,9 +100,9 @@ void PlayState::Draw(GameEngine* game)
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	
-	for (list<Entity>::iterator b = boxes.begin(); b != boxes.end(); b++)
+	for (auto b = boxes.begin(); b != boxes.end(); ++b)
 	{
-		b->Draw();
+		(*b)->Draw();
 	}
 
 	glDisableVertexAttribArray(posAttrib);
