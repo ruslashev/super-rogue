@@ -35,20 +35,15 @@ bool PlayState::Init(GameEngine* game)
 	mvpUniformAttrib = glGetUniformLocation(shaderProgram, "mvp");
 	timeUniformAttrib = glGetUniformLocation(shaderProgram, "time");
 
-	for (int y = 0; y < 10; y++)
-		for (int x = 0; x < 10; x++)
-		{
-			boxes.push_front(new Drawable());
+	for (int y = 0; y < 10; y++) {
+		for (int x = 0; x < 10; x++) {
+			boxes.push_front(Drawable());
 			
-			boxes.front()->m_vertices.push_back(vec3(1.2f*x, 	0, 1.2f*y));
-			boxes.front()->m_vertices.push_back(vec3(1.2f*x, 	0, 1.2f*y+1));
-			boxes.front()->m_vertices.push_back(vec3(1.2f*x+1, 	0, 1.2f*y));
-			boxes.front()->m_vertices.push_back(vec3(1.2f*x+1, 	0, 1.2f*y));
-			boxes.front()->m_vertices.push_back(vec3(1.2f*x+1, 	0, 1.2f*y+1));
-			boxes.front()->m_vertices.push_back(vec3(1.2f*x, 	0, 1.2f*y+1));
-			
-			boxes.front()->Upload();
+			boxes.front().m_vertices = MakeBox(vec3(2.f*x, 0, 2.f*y), 0.5f);
+
+			boxes.front().Upload();
 		}
+	}
 
 	testPlayer.SetPosition(vec3(0, 4, 0));
 
@@ -97,15 +92,15 @@ void PlayState::Draw(GameEngine* game)
 	glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	
 	for (auto b = boxes.begin(); b != boxes.end(); ++b)
 	{
-		(*b)->Draw();
+		glEnableVertexAttribArray(posAttrib);
+		glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	
+		b->Draw();
+		
+		glDisableVertexAttribArray(posAttrib);
 	}
-
-	glDisableVertexAttribArray(posAttrib);
 
 	glfwSwapBuffers();
 }

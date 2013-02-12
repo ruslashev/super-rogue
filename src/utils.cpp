@@ -62,7 +62,7 @@ void GetMouseDeltas(int windowWidth, int windowHeight, float smoothing, int& del
 	deltaY = (oldMouseY - newMouseY)/smoothing;
 }
 
-vector<vec3> MakeBox(vec3 position, int size)
+vector<vec3> MakeBox(vec3 position, float size)
 {
 	vector<vec3> vertices;
 
