@@ -39,7 +39,8 @@ bool PlayState::Init(GameEngine* game)
 		for (int x = 0; x < 10; x++) {
 			boxes.push_front(Drawable());
 			
-			boxes.front().m_vertices = MakeBox(vec3(2.f*x, 0, 2.f*y), 0.5f);
+			boxes.front().m_vertices = MakeBox(vec3(2.f*x, 0, 2.f*y), 1.f);
+			boxes.front().collisionBox = AABB { vec3(2.f*x, 0, 2.f*y), 1.f, 1.f, 1.f};
 
 			boxes.front().Upload();
 		}
@@ -52,6 +53,7 @@ bool PlayState::Init(GameEngine* game)
 
 void PlayState::Update(GameEngine* game)
 {
+	vec3 oldPos = testPlayer.GetPosition();
 	if (glfwGetKey('W'))
 		testPlayer.MoveForward(10*game->dt, vec3(1));
 	if (glfwGetKey('S'))
@@ -61,6 +63,14 @@ void PlayState::Update(GameEngine* game)
 		testPlayer.Strafe(-10*game->dt, vec3(1));
 	if (glfwGetKey('D'))
 		testPlayer.Strafe(10*game->dt, vec3(1));
+
+	// kind of wrong
+	for (auto b = boxes.begin(); b != boxes.end(); b++) {
+		if (vec3InAABB(testPlayer.GetPosition(), b->collisionBox)) {
+			testPlayer.SetPosition(oldPos);
+			break;
+		}
+	}
 
 	int mouseDeltaX, mouseDeltaY;
 	GetMouseDeltas(game->windowWidth, game->windowHeight, 1.f, mouseDeltaX, mouseDeltaY);
@@ -77,7 +87,6 @@ void PlayState::Update(GameEngine* game)
 	// }
 	
 	ViewMat = testPlayer.LookAtMat4();
-
 	mat4 mvp = ProjectionMat * ViewMat;
 	glUniformMatrix4fv(mvpUniformAttrib, 1, GL_FALSE, value_ptr(mvp));
 
@@ -92,8 +101,7 @@ void PlayState::Draw(GameEngine* game)
 	glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (auto b = boxes.begin(); b != boxes.end(); ++b)
-	{
+	for (auto b = boxes.begin(); b != boxes.end(); ++b) {
 		glEnableVertexAttribArray(posAttrib);
 		glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	

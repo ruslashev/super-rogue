@@ -31,8 +31,8 @@ typedef unsigned char byte;
 
 void GetMouseDeltas(int windowWidth, int windowHeight, float smoothing, int& deltaX, int& deltaY);
 
-template<class T> static inline T toRadians(T x) { return (x*M_PI)/180; }
-template<class T> static inline T toDegrees(T x) { return (x*180)/M_PI; }
+template<class T> inline T toRadians(T x) { return (x*M_PI)/180; }
+template<class T> inline T toDegrees(T x) { return (x*180)/M_PI; }
 
 vector<vec3> MakeBox(vec3 position, float size);
 
@@ -40,9 +40,11 @@ struct AABB
 {
 	vec3 position;
 
-	int width;
-	int height;
-	int depth;
+	float width;
+	float height;
+	float depth;
 };
+
+bool vec3InAABB(vec3 point, AABB box);
 
 #endif

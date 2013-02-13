@@ -28,6 +28,7 @@ public:
 	void Upload();
 
 	vector<vec3> m_vertices;
+	AABB collisionBox;
 };
 
 class Player : public BaseEntity

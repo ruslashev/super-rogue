@@ -119,3 +119,26 @@ vector<vec3> MakeBox(vec3 position, float size)
 
 	return vertices;
 }
+
+/*
+function pointInBox(x1, y1,  x2, y2, width2, height2)
+	local result = false
+	if x1 >= x2 && y1 >= y2 && x1 <= x2 + width2 && y1 <= y2 + height2 then
+		result = true
+	end
+	return result
+end
+*/
+
+bool vec3InAABB(vec3 point, AABB box)
+{
+	if (point.x >= box.position.x &&
+		point.x <= box.position.x + box.width &&
+		point.y >= box.position.y &&
+		point.y <= box.position.y + box.height &&
+		point.z >= box.position.z &&
+		point.z <= box.position.z + box.height) {
+		return true;
+	}
+	return false;
+}

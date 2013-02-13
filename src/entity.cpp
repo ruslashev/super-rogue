@@ -10,10 +10,6 @@ void Drawable::Draw()
 
 void Drawable::Upload()
 {
-	for (auto i = m_vertices.begin(); i != m_vertices.end(); ++i)
-	{
-		printf("%.2f\t%.2f\t%.2f\n", i->x, i->y, i->z);
-	}
 	if (m_vertices.size() > 0) {
 		glGenBuffers(1, &m_posVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, m_posVBO);
