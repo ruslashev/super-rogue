@@ -29,7 +29,7 @@ private:
 
 	glm::mat4 ModelMat, ViewMat, ProjectionMat;
 	GLuint vertexShader, fragmentShader, shaderProgram;
-	GLint posAttrib, mvpUniformAttrib, timeUniformAttrib;
+	GLint posAttrib, mvpUniformAttrib, timeUniformAttrib, pposUniformAttrib;
 
 	forward_list<Drawable> boxes;
 	Player testPlayer;

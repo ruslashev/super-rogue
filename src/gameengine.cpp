@@ -14,7 +14,7 @@ bool GameEngine::Init(const char* title, int width, int height)
 
 	windowWidth = width;
 	windowHeight = height;
-	if (!glfwOpenWindow(width, height, 0, 0, 0, 0, 0, 0, GLFW_WINDOW)) {
+	if (!glfwOpenWindow(width, height, 0, 0, 0, 0, 24, 8, GLFW_WINDOW)) {
 		fprintf(stderr, "Failed to open window\n");
 		return false;
 	}
@@ -31,6 +31,7 @@ bool GameEngine::Init(const char* title, int width, int height)
 	}
 	
 	glViewport(0, 0, width, height);
+	
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 

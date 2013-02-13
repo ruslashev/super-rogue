@@ -46,5 +46,6 @@ struct AABB
 };
 
 bool vec3InAABB(vec3 point, AABB box);
+bool AABBinAABB(AABB box, AABB box2);
 
 #endif

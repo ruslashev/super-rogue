@@ -19,7 +19,8 @@ const unsigned char PlayState::gamemap[10][10] = {
 
 bool PlayState::Init(GameEngine* game)
 {
-	if (!LoadShader(GL_VERTEX_SHADER, vertexShader, "data/shaders/vertex.vs") || !LoadShader(GL_FRAGMENT_SHADER, fragmentShader, "data/shaders/fragment.fs")) {
+	if (!LoadShader(GL_VERTEX_SHADER, vertexShader, "data/shaders/vertex.vs") ||
+		!LoadShader(GL_FRAGMENT_SHADER, fragmentShader, "data/shaders/fragment.fs")) {
 		fprintf(stderr, "Failed to load shaders\n");
 		return false;
 	}
@@ -34,6 +35,7 @@ bool PlayState::Init(GameEngine* game)
 	ProjectionMat = perspective(60.f, (float)game->windowWidth/(float)game->windowHeight, 0.1f, 100.f);
 	mvpUniformAttrib = glGetUniformLocation(shaderProgram, "mvp");
 	timeUniformAttrib = glGetUniformLocation(shaderProgram, "time");
+	pposUniformAttrib = glGetUniformLocation(shaderProgram, "playerPos");
 
 	for (int y = 0; y < 10; y++) {
 		for (int x = 0; x < 10; x++) {
@@ -66,7 +68,7 @@ void PlayState::Update(GameEngine* game)
 
 	// kind of wrong
 	for (auto b = boxes.begin(); b != boxes.end(); b++) {
-		if (vec3InAABB(testPlayer.GetPosition(), b->collisionBox)) {
+		if (AABBinAABB(AABB { testPlayer.GetPosition(), 0.2f, 0.2f, 0.2f }, b->collisionBox)) {
 			testPlayer.SetPosition(oldPos);
 			break;
 		}
@@ -89,8 +91,8 @@ void PlayState::Update(GameEngine* game)
 	ViewMat = testPlayer.LookAtMat4();
 	mat4 mvp = ProjectionMat * ViewMat;
 	glUniformMatrix4fv(mvpUniformAttrib, 1, GL_FALSE, value_ptr(mvp));
-
 	glUniform1f(timeUniformAttrib, game->time);
+	glUniform3f(pposUniformAttrib, testPlayer.GetPosition().x, testPlayer.GetPosition().y, testPlayer.GetPosition().z);
 
 	if (glfwGetKey(GLFW_KEY_ESC) || ((glfwGetKey(GLFW_KEY_LCTRL) || glfwGetKey(GLFW_KEY_RCTRL)) && (glfwGetKey('C') || glfwGetKey('W') || glfwGetKey('D'))))
 		game->Quit();
@@ -101,7 +103,7 @@ void PlayState::Draw(GameEngine* game)
 	glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (auto b = boxes.begin(); b != boxes.end(); ++b) {
+	for (auto b = boxes.begin(); b != boxes.end(); b++) {
 		glEnableVertexAttribArray(posAttrib);
 		glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	
