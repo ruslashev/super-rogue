@@ -2,13 +2,14 @@
 #define ENTITY_HPP
 
 #include "utils.hpp"
+#include "gameengine.hpp"
 
 class BaseEntity
 {
 protected:
 	vec3 m_position;
 public:
-	void Update();
+	void Update(float dt);
 	void Draw();
 
 	void SetPosition(vec3 newPos) { m_position = newPos; }
@@ -23,12 +24,13 @@ public:
 	Drawable();
 	~Drawable();
 
-	void Update();
+	void Update(float dt);
 	void Draw();
 	void Upload();
 
 	vector<vec3> m_vertices;
-	AABB collisionBox;
+	AABB m_collisionBox;
+	mat4 modelMat;
 };
 
 class Player : public BaseEntity

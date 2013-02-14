@@ -34,7 +34,7 @@ void GetMouseDeltas(int windowWidth, int windowHeight, float smoothing, int& del
 template<class T> inline T toRadians(T x) { return (x*M_PI)/180; }
 template<class T> inline T toDegrees(T x) { return (x*180)/M_PI; }
 
-vector<vec3> MakeBox(vec3 position, float size);
+vector<vec3> MakeBox(float size);
 
 struct AABB
 {

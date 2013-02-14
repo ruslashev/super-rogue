@@ -62,16 +62,16 @@ void GetMouseDeltas(int windowWidth, int windowHeight, float smoothing, int& del
 	deltaY = (oldMouseY - newMouseY)/smoothing;
 }
 
-vector<vec3> MakeBox(vec3 position, float size)
+vector<vec3> MakeBox(float size)
 {
 	vector<vec3> vertices;
 
-	float x = position.x;
-	float y = position.y;
-	float z = position.z;
-	float x2 = position.x + size;
-	float y2 = position.y + size;
-	float z2 = position.z + size;
+	float x = 0;
+	float y = 0;
+	float z = 0;
+	float x2 = size;
+	float y2 = size;
+	float z2 = size;
 
 	vertices.push_back( vec3( x , y , z ) );
 	vertices.push_back( vec3( x , y2, z ) );

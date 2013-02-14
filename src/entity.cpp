@@ -40,11 +40,14 @@ void Player::MoveForward(float distance, vec3 moveAxis)
 	float ly = 0;
 	float lz = sin(m_yaw);
 
-	if (moveAxis.y)
-	{
-		lx *= cos(m_pitch);
+	if (moveAxis.y) {
 		ly = sin(m_pitch);
-		lz *= cos(m_pitch);
+		if (moveAxis.x || moveAxis.z) {
+			lx *= cos(m_pitch);
+			lz *= cos(m_pitch);
+		} else {
+			ly = 1;
+		}
 	}
 
 	newPos += vec3(lx*distance, ly*distance, lz*distance)*moveAxis;

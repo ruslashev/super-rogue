@@ -16,7 +16,7 @@ void IntroState::Update(GameEngine* game)
 		game->ChangeState(PlayState::Instance());
 	//}
 
-	if (glfwGetKey(GLFW_KEY_ESC) || ((glfwGetKey(GLFW_KEY_LCTRL) || glfwGetKey(GLFW_KEY_RCTRL)) && (glfwGetKey('C') || glfwGetKey('W') || glfwGetKey('D'))))
+	if (glfwGetKey(GLFW_KEY_ESC))
 		game->Quit();
 }
 
