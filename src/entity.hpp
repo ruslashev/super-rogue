@@ -39,6 +39,7 @@ private:
 	float m_pitch;
 	float m_yaw;
 public:
+	void Update(float dt);
 
 	void MoveForward(float distance, vec3 moveAxis);
 	void Strafe(float distance, vec3 moveAxis);

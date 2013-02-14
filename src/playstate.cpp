@@ -59,39 +59,7 @@ bool PlayState::Init(GameEngine* game)
 void PlayState::Update(GameEngine* game)
 {
 	vec3 oldPos = testPlayer.GetPosition();
-
-	{
-		if (glfwGetKey('W')) {
-			testPlayer.MoveForward(10*game->dt, vec3(1));
-		}
-		if (glfwGetKey('S')) {
-			testPlayer.MoveForward(-10*game->dt, vec3(1));
-		}
-
-		if (glfwGetKey('A')) {
-			testPlayer.Strafe(-10*game->dt, vec3(1));
-		}
-		if (glfwGetKey('D')) {
-			testPlayer.Strafe(10*game->dt, vec3(1));
-		}
-
-		if (glfwGetKey(GLFW_KEY_SPACE)) {
-			testPlayer.MoveForward(10*game->dt, vec3(0, 1, 0));
-		}
-		if (glfwGetKey(GLFW_KEY_LCTRL)) {
-			testPlayer.MoveForward(-10*game->dt, vec3(0, 1, 0));
-		}
-
-
-		int mouseDeltaX, mouseDeltaY;
-		GetMouseDeltas(game->windowWidth, game->windowHeight, 1.f, mouseDeltaX, mouseDeltaY);
-
-		if (mouseDeltaX || mouseDeltaY) {
-			testPlayer.Rotate(7.f*mouseDeltaY* game->dt, 7.f*mouseDeltaX* game->dt);	
-		}
-	}
-	
-	// kind of wrong
+	testPlayer.Update(game->dt);
 	for (auto b = boxes.begin(); b != boxes.end(); b++) {
 		if (AABBinAABB(AABB { testPlayer.GetPosition(), 0.2f, 0.2f, 0.2f }, b->m_collisionBox)) {
 			testPlayer.SetPosition(oldPos);
@@ -99,7 +67,7 @@ void PlayState::Update(GameEngine* game)
 		}
 	}
 
-	
+
 	ViewMat = testPlayer.LookAtMat4();
 	glUniform1f(timeUniformAttrib, game->time);
 	glUniform3f(pposUniformAttrib, testPlayer.GetPosition().x, testPlayer.GetPosition().y, testPlayer.GetPosition().z);

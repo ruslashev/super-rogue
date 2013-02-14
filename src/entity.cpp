@@ -92,3 +92,36 @@ mat4 Player::LookAtMat4()
 		vec3(0, 1, 0)
 	);
 }
+
+void Player::Update(float dt)
+{
+	if (glfwGetKey('W')) {
+		MoveForward(10*dt, vec3(1));
+	}
+	if (glfwGetKey('S')) {
+		MoveForward(-10*dt, vec3(1));
+	}
+
+	if (glfwGetKey('A')) {
+		Strafe(-10*dt, vec3(1));
+	}
+	if (glfwGetKey('D')) {
+		Strafe(10*dt, vec3(1));
+	}
+
+	if (glfwGetKey(GLFW_KEY_SPACE)) {
+		MoveForward(10*dt, vec3(0, 1, 0));
+	}
+	if (glfwGetKey(GLFW_KEY_LCTRL)) {
+		MoveForward(-10*dt, vec3(0, 1, 0));
+	}
+
+
+	int mouseDeltaX, mouseDeltaY;
+	// todo
+	GetMouseDeltas(800, 600, 1.f, mouseDeltaX, mouseDeltaY);
+
+	if (mouseDeltaX || mouseDeltaY) {
+		Rotate(7.f*mouseDeltaY* dt, 7.f*mouseDeltaX* dt);	
+	}
+}
