@@ -8,7 +8,7 @@ default: objdir $(EXECNAME)
 	./$(EXECNAME)
 
 $(EXECNAME): $(OBJS)
-	$(CXX) -o $@ $^ -lSDL2
+	$(CXX) -o $@ $^ -lSDL2 -lSDL2_image
 
 obj/%.o: source/%.cpp
 	$(CXX) -c -o $@ $< -Wall -Wextra -g -std=c++0x
