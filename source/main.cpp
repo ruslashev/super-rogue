@@ -1,23 +1,8 @@
+#include "utils.hpp"
+
 #include <fstream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <stdexcept>
-
-void assertf(bool condition, const char *format, ...)
-{
-#ifndef RELEASE
-	if (!condition) {
-		char output[512];
-		va_list args;
-		va_start(args, format);
-		vsnprintf(output, 512, format, args);
-		va_end(args);
-		std::string outputStr = output;
-		outputStr += '\n';
-		throw std::runtime_error(outputStr);
-	}
-#endif
-}
 
 int main()
 {
@@ -55,15 +40,30 @@ int main()
 
 	SDL_Event sdlEvent;
 	bool done = false;
+	unsigned int prev = SDL_GetTicks();
+	unsigned int lag = 0;
+	const int MS_PER_UPDATE = 16;
 	while (!done) {
 		while (SDL_PollEvent(&sdlEvent) != 0) {
 			if (sdlEvent.type == SDL_QUIT)
 				done = true;
 		}
+
+		unsigned int curr = SDL_GetTicks();
+		unsigned int elapsed = curr - prev;
+		prev = curr;
+		lag += elapsed;
+
+		// processInput()
+
+		while (lag >= MS_PER_UPDATE) {
+			// update()
+			lag -= MS_PER_UPDATE;
+		}
+
+		// render(lag/MS_PER_UPDATE)
 		SDL_RenderClear(sdlRenderer);
-
 		SDL_RenderCopy(sdlRenderer, playerTexture, NULL, NULL);
-
 		SDL_RenderPresent(sdlRenderer);
 	}
 
