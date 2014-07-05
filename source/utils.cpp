@@ -16,3 +16,14 @@ void assertf(bool condition, const char *format, ...)
 #endif
 }
 
+void LoadImage(SDL_Renderer *rend, const char *path, SDL_Texture **outTexture)
+{
+	SDL_Surface *tempSurf = IMG_Load(path);
+	assertf(tempSurf != NULL, "Failed to load image \"%s\": %s", path, IMG_GetError());
+
+	*outTexture = SDL_CreateTextureFromSurface(rend, tempSurf);
+	assertf(outTexture != NULL, "Failed to create texture: %s", SDL_GetError());
+
+	SDL_FreeSurface(tempSurf);
+}
+

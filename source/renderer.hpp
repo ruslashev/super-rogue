@@ -9,14 +9,14 @@
 
 class Renderer
 {
-	SDL_Window *sdlWindow;
+	SDL_Window *window;
 	std::vector<Entity> entities;
 public:
-	SDL_Renderer *sdlRenderer;
+	SDL_Renderer *rend;
 
 	void Create();
-	void Redraw(double marginToNextFrame);
-	void PushEntity(const Entity &ent);
+	void Draw(double marginToNextFrame);
+	void PushEntity(Entity *ent);
 	~Renderer();
 };
 

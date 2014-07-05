@@ -1,5 +1,4 @@
 #include "renderer.hpp"
-#include "player.hpp"
 #include "utils.hpp"
 
 #include <fstream>
@@ -7,25 +6,26 @@
 int main()
 {
 	Renderer renderer;
-	Player hero;
+	Entity player;
+
 	try {
 		renderer.Create();
-		hero.LoadImage(renderer.sdlRenderer, "protagonist.png");
+		LoadImage(renderer.rend, "protagonist.png", &player.texture);
 	} catch (std::exception &e) {
 		fprintf(stderr, "\x1b[31m" "ERROR" "\x1b[0m" " %s\n", e.what());
 		return 1;
 	}
 
-	renderer.PushEntity(hero);
+	renderer.PushEntity(&player);
 
-	SDL_Event sdlEvent;
+	SDL_Event event;
 	bool done = false;
 	unsigned int prev = SDL_GetTicks();
 	unsigned int lag = 0;
 	const int MS_PER_UPDATE = 16;
 	while (!done) {
-		while (SDL_PollEvent(&sdlEvent) != 0) {
-			if (sdlEvent.type == SDL_QUIT)
+		while (SDL_PollEvent(&event) != 0) {
+			if (event.type == SDL_QUIT)
 				done = true;
 		}
 
@@ -41,8 +41,9 @@ int main()
 			lag -= MS_PER_UPDATE;
 		}
 
-		renderer.Redraw(lag/MS_PER_UPDATE);
+		renderer.Draw(lag/MS_PER_UPDATE);
 	}
 
 	return 0;
 }
+

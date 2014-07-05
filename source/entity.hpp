@@ -4,15 +4,20 @@
 #include "utils.hpp"
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
 class Entity
 {
 public:
+	int x, y;
 	SDL_Texture *texture;
 
-	void LoadImage(SDL_Renderer *sdlRenderer, const char *path);
-	virtual void Draw(SDL_Renderer *sdlRenderer) = 0;
+	Entity() { texture = NULL; }
+
+	void Draw(SDL_Renderer *rend) {
+		SDL_RenderClear(rend);
+		SDL_RenderCopy(rend, texture, NULL, NULL);
+		SDL_RenderPresent(rend);
+	}
 };
 
 #endif
