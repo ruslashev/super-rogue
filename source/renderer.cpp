@@ -22,13 +22,15 @@ void Renderer::Create()
 
 void Renderer::Redraw(double marginToNextFrame)
 {
-	for (std::vector<Player>::iterator i = entities.begin(); i != entities.end();
-			i++) {
-		i->Draw(sdlRenderer);
+	SDL_RenderClear(sdlRenderer);
+	for (std::vector<Entity>::iterator e = entities.begin(); e != entities.end();
+			e++) {
+		e->Draw(sdlRenderer);
 	}
+	SDL_RenderPresent(sdlRenderer);
 }
 
-void Renderer::PushEntity(Player &ent)
+void Renderer::PushEntity(const Entity &ent)
 {
 	entities.push_back(ent);
 }
