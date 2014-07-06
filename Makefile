@@ -1,6 +1,6 @@
 CXX = clang++
 
-OBJS = obj/entity.o obj/renderer.o obj/utils.o obj/main.o
+OBJS = obj/renderer.o obj/utils.o obj/main.o obj/player.o obj/world.o
 
 EXECNAME = super-rogue
 

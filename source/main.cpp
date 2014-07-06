@@ -1,22 +1,27 @@
 #include "renderer.hpp"
 #include "utils.hpp"
+#include "player.hpp"
+#include "world.hpp"
 
 #include <fstream>
 
 int main()
 {
-	Renderer renderer;
-	Entity player;
+	World world;
+	Renderer renderer(&world);
+	Player player;
+
+	world.player = &player;
 
 	try {
 		renderer.Create();
-		LoadImage(renderer.rend, "protagonist.png", &player.texture);
+		LoadImage(renderer.rend, "enemy.png",       &renderer.entityTextures[0]);
+		LoadImage(renderer.rend, "protagonist.png", &renderer.entityTextures[1]);
+		LoadImage(renderer.rend, "enemy.png",       &renderer.entityTextures[2]);
 	} catch (std::exception &e) {
 		fprintf(stderr, "\x1b[31m" "ERROR" "\x1b[0m" " %s\n", e.what());
 		return 1;
 	}
-
-	renderer.PushEntity(&player);
 
 	SDL_Event event;
 	bool done = false;

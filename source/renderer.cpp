@@ -1,5 +1,9 @@
-#include "utils.hpp"
 #include "renderer.hpp"
+
+Renderer::Renderer(World *nworld)
+{
+	world = nworld;
+}
 
 void Renderer::Create()
 {
@@ -22,15 +26,13 @@ void Renderer::Create()
 void Renderer::Draw(double marginToNextFrame)
 {
 	SDL_RenderClear(rend);
-	for (Entity &e : entities) {
-		e.Draw(rend);
+	// Draw player
+	SDL_RenderCopy(rend, entityTextures[ENT_PLAYER], NULL, NULL);
+	// Draw rest of entities
+	for (std::unique_ptr<Entity> &e : world->entities) {
+		SDL_RenderCopy(rend, entityTextures[e->type], NULL, NULL);
 	}
 	SDL_RenderPresent(rend);
-}
-
-void Renderer::PushEntity(Entity *ent)
-{
-	entities.push_back(*ent);
 }
 
 Renderer::~Renderer()
