@@ -12,6 +12,7 @@ int main()
 	Player player;
 
 	world.player = &player;
+	world.PushEntity(new Entity);
 
 	try {
 		renderer.Create();
@@ -25,28 +26,32 @@ int main()
 
 	SDL_Event event;
 	bool done = false;
-	unsigned int prev = SDL_GetTicks();
-	unsigned int lag = 0;
-	const int MS_PER_UPDATE = 16;
-	while (!done) {
+	double time = 0.0;
+	const double dt = 0.01;
+
+	double currentTime = SDL_GetTicks() / 1000.0;
+	double accumulator = 0.0;
+
+	while (!done)
+	{
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT)
 				done = true;
 		}
 
-		unsigned int curr = SDL_GetTicks();
-		unsigned int elapsed = curr - prev;
-		prev = curr;
-		lag += elapsed;
+		const double newTime = SDL_GetTicks() / 1000.0;
+		const double frameTime = newTime - currentTime;
+		currentTime = newTime;
 
-		// processInput()
+		accumulator += frameTime;
 
-		while (lag >= MS_PER_UPDATE) {
-			// update()
-			lag -= MS_PER_UPDATE;
+		while (accumulator >= dt) {
+			world.Update(dt, time);
+			accumulator -= dt;
+			time += dt;
 		}
 
-		renderer.Draw(lag/MS_PER_UPDATE);
+		renderer.Draw();
 	}
 
 	return 0;

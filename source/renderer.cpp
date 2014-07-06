@@ -20,18 +20,29 @@ void Renderer::Create()
 	rend = SDL_CreateRenderer(window, -1, 0);
 	assertf(rend != NULL, "Failed to create renderer: %s", SDL_GetError());
 
+	SDL_SetRenderDrawColor(rend, 20, 20, 20, 255);
+
 	IMG_Init(IMG_INIT_PNG);
 }
 
-void Renderer::Draw(double marginToNextFrame)
+void Renderer::Draw()
 {
+	SDL_Rect placerRect;
+	placerRect.w = placerRect.h = 50;
 	SDL_RenderClear(rend);
+
 	// Draw player
-	SDL_RenderCopy(rend, entityTextures[ENT_PLAYER], NULL, NULL);
+	placerRect.x = world->player->x;
+	placerRect.y = world->player->y;
+	SDL_RenderCopy(rend, entityTextures[ENT_PLAYER], NULL, &placerRect);
+
 	// Draw rest of entities
 	for (std::unique_ptr<Entity> &e : world->entities) {
-		SDL_RenderCopy(rend, entityTextures[e->type], NULL, NULL);
+		placerRect.x = e->x;
+		placerRect.y = e->y;
+		SDL_RenderCopy(rend, entityTextures[e->type], NULL, &placerRect);
 	}
+
 	SDL_RenderPresent(rend);
 }
 

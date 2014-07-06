@@ -12,7 +12,7 @@ public:
 	EntityType type;
 
 	Entity() : x(0), y(0), health(1), type(ENT_DUMMY) {};
-	// virtual void Update(double dt, double time) {};
+	virtual void Update(double dt, double time) { x += 100*dt; };
 };
 
 #endif

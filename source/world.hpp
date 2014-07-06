@@ -12,6 +12,7 @@ public:
 	Entity *player;
 
 	void PushEntity(Entity *ent);
+	void Update(double dt, double time);
 };
 
 #endif

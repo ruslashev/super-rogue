@@ -17,7 +17,7 @@ public:
 	SDL_Texture *entityTextures[3];
 
 	void Create();
-	void Draw(double marginToNextFrame);
+	void Draw();
 
 	Renderer(World *nworld);
 	~Renderer();

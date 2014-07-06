@@ -7,6 +7,7 @@ class Player : public Entity
 {
 public:
 	Player();
+	void Update(double dt, double time);
 };
 
 #endif

@@ -8,3 +8,9 @@ Player::Player()
 	type = ENT_PLAYER;
 }
 
+void Player::Update(double dt, double time)
+{
+	y += 100.0*dt;
+	printf("%d\n", y);
+}
+
