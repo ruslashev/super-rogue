@@ -8,9 +8,9 @@
 int main()
 {
 	World world;
-	Renderer renderer(&world);
-	Player player;
+	Renderer renderer;
 
+	Player player;
 	world.player = &player;
 	world.PushEntity(new Entity);
 
@@ -51,7 +51,7 @@ int main()
 			time += dt;
 		}
 
-		renderer.Draw();
+		renderer.Draw(&world);
 	}
 
 	return 0;

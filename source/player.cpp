@@ -10,7 +10,6 @@ Player::Player()
 
 void Player::Update(double dt, double time)
 {
-	y += 100.0*dt;
-	printf("%d\n", y);
+	y += 20.0*dt;
 }
 

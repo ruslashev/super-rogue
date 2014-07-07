@@ -11,15 +11,13 @@
 class Renderer
 {
 	SDL_Window *window;
-	World *world;
 public:
 	SDL_Renderer *rend;
 	SDL_Texture *entityTextures[3];
 
 	void Create();
-	void Draw();
+	void Draw(World *world);
 
-	Renderer(World *nworld);
 	~Renderer();
 };
 

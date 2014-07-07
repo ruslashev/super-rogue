@@ -1,10 +1,5 @@
 #include "renderer.hpp"
 
-Renderer::Renderer(World *nworld)
-{
-	world = nworld;
-}
-
 void Renderer::Create()
 {
 	int SDLInitCode = SDL_Init(SDL_INIT_VIDEO);
@@ -25,21 +20,21 @@ void Renderer::Create()
 	IMG_Init(IMG_INIT_PNG);
 }
 
-void Renderer::Draw()
+void Renderer::Draw(World *world)
 {
 	SDL_Rect placerRect;
 	placerRect.w = placerRect.h = 50;
 	SDL_RenderClear(rend);
 
 	// Draw player
-	placerRect.x = world->player->x;
-	placerRect.y = world->player->y;
+	placerRect.x = (int)world->player->x;
+	placerRect.y = (int)world->player->y;
 	SDL_RenderCopy(rend, entityTextures[ENT_PLAYER], NULL, &placerRect);
 
 	// Draw rest of entities
 	for (std::unique_ptr<Entity> &e : world->entities) {
-		placerRect.x = e->x;
-		placerRect.y = e->y;
+		placerRect.x = (int)e->x;
+		placerRect.y = (int)e->y;
 		SDL_RenderCopy(rend, entityTextures[e->type], NULL, &placerRect);
 	}
 
