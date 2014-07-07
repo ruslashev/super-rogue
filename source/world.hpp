@@ -4,12 +4,13 @@
 #include <vector>
 #include <memory>
 #include "entity.hpp"
+#include "player.hpp"
 
 class World
 {
 public:
 	std::vector<std::unique_ptr<Entity>> entities;
-	Entity *player;
+	Player *player;
 
 	void PushEntity(Entity *ent);
 	void Update(double dt, double time);

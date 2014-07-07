@@ -2,6 +2,7 @@
 #include "utils.hpp"
 #include "player.hpp"
 #include "world.hpp"
+#include "input.hpp"
 
 #include <fstream>
 
@@ -37,6 +38,8 @@ int main()
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT)
 				done = true;
+			else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP)
+				handleInput(event.key, &world);
 		}
 
 		const double newTime = SDL_GetTicks() / 1000.0;

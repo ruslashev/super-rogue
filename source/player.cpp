@@ -10,6 +10,29 @@ Player::Player()
 
 void Player::Update(double dt, double time)
 {
-	y += 20.0*dt;
+	x += velx*dt;
+	y += vely*dt;
+
+	velx = vely = 0;
+}
+
+void Player::moveUp()
+{
+	vely -= 100.0;
+}
+
+void Player::moveDown()
+{
+	vely += 100.0;
+}
+
+void Player::moveLeft()
+{
+	velx -= 100.0;
+}
+
+void Player::moveRight()
+{
+	velx += 100.0;
 }
 
