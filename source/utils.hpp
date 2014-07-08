@@ -8,6 +8,8 @@
 
 void assertf(bool condition, const char *format, ...);
 void LoadImage(SDL_Renderer *rend, const char *path, SDL_Texture **outTexture);
+double lerp(double a, double b, double t);
+double clamp(double n, double min, double max);
 
 #endif
 

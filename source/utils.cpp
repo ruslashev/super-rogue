@@ -27,3 +27,13 @@ void LoadImage(SDL_Renderer *rend, const char *path, SDL_Texture **outTexture)
 	SDL_FreeSurface(tempSurf);
 }
 
+double lerp(double a, double b, double t)
+{
+	return (1 - t)*a + t*b;
+}
+
+double clamp(double n, double min, double max)
+{
+    n = n > max ? max : n;
+    return n < min ? min : n;
+}

@@ -5,7 +5,8 @@
 
 class Player : public Entity
 {
-	double velx, vely;
+	double oldx, oldy;
+	double accelx, accely;
 public:
 	Player();
 	void Update(double dt, double time);
@@ -14,6 +15,11 @@ public:
 	void moveDown();
 	void moveLeft();
 	void moveRight();
+
+	void resetUp();
+	void resetDown();
+	void resetLeft();
+	void resetRight();
 };
 
 #endif
