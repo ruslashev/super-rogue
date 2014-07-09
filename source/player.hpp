@@ -16,10 +16,7 @@ public:
 	void moveLeft();
 	void moveRight();
 
-	void resetUp();
-	void resetDown();
-	void resetLeft();
-	void resetRight();
+	void resetMoving();
 };
 
 #endif

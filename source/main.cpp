@@ -14,6 +14,7 @@ int main()
 	Player player;
 	world.player = &player;
 	world.PushEntity(new Entity);
+	InputHandler inputHandler;
 
 	try {
 		renderer.Create();
@@ -39,7 +40,7 @@ int main()
 			if (event.type == SDL_QUIT)
 				done = true;
 			else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP)
-				handleInput(event.key, &world);
+				inputHandler.HandleInput(event.key, &world);
 		}
 
 		const double newTime = SDL_GetTicks() / 1000.0;

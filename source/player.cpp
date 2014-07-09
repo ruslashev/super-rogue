@@ -37,8 +37,5 @@ void Player::moveDown()  { accely += 10000; }
 void Player::moveLeft()  { accelx -= 10000; }
 void Player::moveRight() { accelx += 10000; }
 
-void Player::resetUp()    { accely = 0; }
-void Player::resetDown()  { accely = 0; }
-void Player::resetLeft()  { accelx = 0; }
-void Player::resetRight() { accelx = 0; }
+void Player::resetMoving() { accelx = accely = 0; }
 
